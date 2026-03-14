@@ -1,5 +1,4 @@
 import { prisma } from "@/lib/prisma";
-import { mockDepositPrograms } from "./mock-data";
 import { safeDbQuery } from "./safe-query";
 
 export async function getDepositPrograms() {
@@ -8,7 +7,7 @@ export async function getDepositPrograms() {
       prisma.depositProgram.findMany({
         orderBy: [{ currency: "asc" }, { termMonths: "asc" }, { rate: "desc" }],
       }),
-    mockDepositPrograms,
+    [],
     "Failed to load deposit programs",
   );
 }

@@ -38,6 +38,8 @@
 - Store working context in this file, not in chat history.
 - Deliver all mandatory requirements first; treat optional items as stretch goals.
 - Implement in small vertical slices and verify locally after each completed task.
+- Keep current demo/mock/seed data strictly as bootstrap data, not as future authentication identity.
+- If auth is added later, user resolution must move from "first user in DB" to an explicit auth identity mapping.
 
 ## Technical Blueprint
 
@@ -188,6 +190,7 @@
 - Treat `Contract.agreementText` as the immutable stored agreement snapshot.
 - Keep card-based payment optional and validate card ownership and balance in service logic.
 - Keep PostgreSQL as the target DB because the schema already points to it and it fits Docker setup well.
+- Treat current demo/seeded records as development bootstrap data only.
 
 ### Possible Schema Adjustments Only If Needed
 - Consider switching monetary fields from `Float` to `Decimal` if precision concerns become material during implementation.
@@ -284,7 +287,12 @@
 - Done: step navigation logic was normalized so program selection only stores state, while explicit buttons control movement between steps.
 - Done: agreement step now generates contract text from user/program/payment data and requires explicit consent before submit becomes available.
 - Done: core pages and flow steps received a visual cleanup pass so the UI is more coherent before the database integration phase.
-- Deferred: submit API, seed, Docker.
+- Done: submit API route, contract creation service, and 10-second async submit flow are now wired.
+- Done: Prisma seed script now creates the demo user, cards, and deposit programs with stable IDs.
+- Done: initial Prisma migration, Dockerfile, docker-compose, and README runtime instructions are now in the repository.
+- Done: development mock fallback data has been removed from runtime reads so the app now reflects actual DB availability.
+- Done: real PostgreSQL container was started, Prisma migration was applied, seed was executed, and `.env` now points to the real local Postgres instance.
+- Deferred: final end-to-end application verification against the running DB-backed app instance.
 
 ## First Iteration Delivery Order
 1. Finalize dependency list.
@@ -345,9 +353,17 @@
 - There is an existing user change in `tsconfig.json`; future edits must avoid overwriting it blindly.
 - The exact startup strategy for migrations and seed inside Docker still needs to be chosen.
 - "Exactly 10 seconds" should be implemented in a way that is deterministic and easy to verify locally.
+- If Google auth is added later, the `User` model will likely need a dedicated identity field such as email or provider subject id.
 
 ## Cleanup After Real DB Connection
-- Remove development fallback data from `lib/db/mock-data.ts`.
-- Remove mock fallbacks from `lib/db/users.ts` and `lib/db/deposit-programs.ts`.
-- Remove the demo-data alert from `components/deposits/deposit-flow.tsx`.
-- Leave only Prisma-backed reads once the database and seed are working reliably.
+- Completed: development fallback data was removed from runtime reads.
+- Remaining: verify the real DB path end-to-end after migration and seed execution.
+
+## Immediate Next Runtime Step
+- Verify the full UI flow against the running DB-backed app instance.
+- Confirm contract creation, 10-second delay, and card balance updates through the actual app runtime.
+
+## Future Auth Note
+- Google auth may be added later as an optional enhancement.
+- Current demo user IDs must not be treated as stable user identities for future authentication.
+- When auth is introduced, authenticated user lookup should be based on an explicit auth mapping instead of the current first-user fallback.

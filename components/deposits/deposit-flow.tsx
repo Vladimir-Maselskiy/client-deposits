@@ -1,8 +1,13 @@
 "use client";
 
 import { Alert, Box, Button, Paper, Stack, Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type {
+  CreateDepositPayload,
+  CreateDepositResponse,
   CurrentUserProfile,
   DepositProgramSummary,
   UserCardSummary,
@@ -21,10 +26,62 @@ type Props = {
 };
 
 export function DepositFlow({ user, programs, cards }: Props) {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const currentStep = useDepositFlowStore((state) => state.currentStep);
   const selectedProgramId = useDepositFlowStore((state) => state.selectedProgramId);
+  const amount = useDepositFlowStore((state) => state.amount);
+  const customName = useDepositFlowStore((state) => state.customName);
+  const paymentMethod = useDepositFlowStore((state) => state.paymentMethod);
+  const selectedCardId = useDepositFlowStore((state) => state.selectedCardId);
   const setCurrentStep = useDepositFlowStore((state) => state.setCurrentStep);
+  const resetFlow = useDepositFlowStore((state) => state.resetFlow);
   const hasPrograms = programs.length > 0;
+
+  const createDepositMutation = useMutation<
+    CreateDepositResponse,
+    Error,
+    CreateDepositPayload
+  >({
+    mutationFn: async (payload) => {
+      const response = await fetch("/api/deposits", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to create deposit");
+      }
+
+      return data as CreateDepositResponse;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries();
+      resetFlow();
+      router.push("/deposits");
+      router.refresh();
+    },
+  });
+
+  const handleAgreementSubmit = (agreementText: string) => {
+    if (!selectedProgramId) {
+      return;
+    }
+
+    createDepositMutation.mutate({
+      selectedProgramId,
+      amount,
+      customName,
+      paymentMethod,
+      selectedCardId,
+      agreementText,
+    });
+  };
 
   const renderStep = () => {
     if (currentStep === 0) {
@@ -39,7 +96,15 @@ export function DepositFlow({ user, programs, cards }: Props) {
       return <DepositReviewStep programs={programs} cards={cards} />;
     }
 
-    return <DepositAgreementStep user={user} programs={programs} cards={cards} />;
+    return (
+      <DepositAgreementStep
+        user={user}
+        programs={programs}
+        cards={cards}
+        isSubmitting={createDepositMutation.isPending}
+        onSubmit={handleAgreementSubmit}
+      />
+    );
   };
 
   return (
@@ -73,30 +138,57 @@ export function DepositFlow({ user, programs, cards }: Props) {
           </Alert>
         )}
 
-        {hasPrograms && programs.some((program) => program.id.startsWith("mock-")) && (
-          <Alert severity="info">
-            Demo deposit programs are currently shown because the database is not connected yet.
-          </Alert>
-        )}
-
         <Paper
           elevation={0}
           sx={{
+            position: "relative",
             p: { xs: 2.5, md: 4 },
             borderRadius: 5,
             background:
               "linear-gradient(180deg, rgba(255,250,244,0.98) 0%, rgba(250,244,235,0.98) 100%)",
           }}
         >
+          {createDepositMutation.isPending && (
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                zIndex: 2,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 5,
+                bgcolor: "rgba(255, 250, 244, 0.78)",
+                backdropFilter: "blur(2px)",
+              }}
+            >
+              <Stack spacing={1.5} alignItems="center">
+                <CircularProgress />
+                <Typography fontWeight={600}>Processing Deposit</Typography>
+              </Stack>
+            </Box>
+          )}
           <Stack spacing={4}>
             <DepositStepper activeStep={currentStep} />
+            {createDepositMutation.isError && (
+              <Alert severity="error">{createDepositMutation.error.message}</Alert>
+            )}
+            {createDepositMutation.isPending && (
+              <Alert
+                severity="info"
+                icon={<CircularProgress size={18} color="inherit" />}
+              >
+                Creating the deposit contract. The request is intentionally delayed for 10
+                seconds.
+              </Alert>
+            )}
             {renderStep()}
 
             {currentStep === 0 && (
               <>
                 <Alert severity="info">
-                  The selected program is already stored in Zustand, and {cards.length}{" "}
-                  current-user cards are available for the upcoming payment step.
+                  The selected program is stored in Zustand, and {cards.length} current-user
+                  cards are available for the upcoming payment step.
                 </Alert>
 
                 <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
@@ -105,7 +197,7 @@ export function DepositFlow({ user, programs, cards }: Props) {
                   </Button>
                   <Button
                     variant="contained"
-                    disabled={!selectedProgramId}
+                    disabled={!selectedProgramId || createDepositMutation.isPending}
                     onClick={() => setCurrentStep(1)}
                   >
                     Next

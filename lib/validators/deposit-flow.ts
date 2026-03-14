@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { parseAmountInput } from "@/lib/utils/amount";
 
 function normalizeAmount(value: string) {
   return value.replace(/\s+/g, "").replace(",", ".");
@@ -11,8 +12,7 @@ export const depositParamsSchema = z
       .trim()
       .min(1, "Amount is required")
       .refine((value) => {
-        const normalized = normalizeAmount(value);
-        const parsed = Number(normalized);
+        const parsed = parseAmountInput(normalizeAmount(value));
 
         return Number.isFinite(parsed) && parsed > 0;
       }, "Amount must be greater than zero"),

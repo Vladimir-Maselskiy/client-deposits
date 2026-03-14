@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import type { UserCardSummary } from "@/types/deposits";
+import { formatAmountInput } from "@/lib/utils/amount";
 import { useDepositFlowStore } from "@/store/deposit-flow-store";
 import {
   type DepositParamsFormValues,
@@ -27,16 +28,6 @@ import {
 type Props = {
   cards: UserCardSummary[];
 };
-
-function keepDigitsOnly(value: string) {
-  return value.replace(/\D+/g, "");
-}
-
-function formatAmount(value: string) {
-  const digits = keepDigitsOnly(value);
-
-  return digits.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-}
 
 export function DepositParamsStep({ cards }: Props) {
   const amount = useDepositFlowStore((state) => state.amount);
@@ -91,12 +82,12 @@ export function DepositParamsStep({ cards }: Props) {
                 error={Boolean(errors.amount)}
                 helperText={errors.amount?.message || "Enter the deposit amount"}
                 inputMode="numeric"
-                value={formatAmount(field.value)}
-                onChange={(event) => field.onChange(formatAmount(event.target.value))}
+                value={formatAmountInput(field.value)}
+                onChange={(event) => field.onChange(formatAmountInput(event.target.value))}
                 onPaste={(event) => {
                   event.preventDefault();
                   const pasted = event.clipboardData.getData("text");
-                  field.onChange(formatAmount(pasted));
+                  field.onChange(formatAmountInput(pasted));
                 }}
                 fullWidth
               />

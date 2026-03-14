@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Client Deposits
 
-## Getting Started
+Full-stack test assignment for a client deposits module built with `Next.js`, `TypeScript`, `Prisma`, `React Query`, `Zustand`, `React Hook Form`, `Zod`, and `Material UI`.
 
-First, run the development server:
+## Current Scope
+- "My Deposits" page with empty state and deposits list
+- Multi-step deposit opening flow
+- Agreement generation with consent step
+- API-based deposit creation with a fixed 10-second response delay
+- Prisma seed data for a demo user, cards, and deposit programs
+
+## Local Run
+1. Create `.env` from [.env.example](/c:/GitHub/client-deposits/.env.example).
+2. Make sure PostgreSQL is running locally on port `5432`.
+3. Run Prisma migration and seed:
+
+```bash
+npx prisma migrate deploy
+npx prisma db seed
+```
+
+4. Start the app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Docker Run
+Run:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+docker-compose up --build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This starts:
+- PostgreSQL
+- the Next.js app on `http://localhost:3000`
+- Prisma migration deployment
+- Prisma seed
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+- The repository still contains temporary mock fallback reads for development. These should be removed once the real DB flow is confirmed end-to-end.
+- Future optional Google auth should use explicit identity mapping and must not rely on the current demo user as an implicit authenticated identity.

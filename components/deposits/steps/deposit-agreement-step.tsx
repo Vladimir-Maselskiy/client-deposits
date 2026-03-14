@@ -20,9 +20,17 @@ type Props = {
   user: CurrentUserProfile | null;
   programs: DepositProgramSummary[];
   cards: UserCardSummary[];
+  isSubmitting: boolean;
+  onSubmit: (agreementText: string) => void;
 };
 
-export function DepositAgreementStep({ user, programs, cards }: Props) {
+export function DepositAgreementStep({
+  user,
+  programs,
+  cards,
+  isSubmitting,
+  onSubmit,
+}: Props) {
   const selectedProgramId = useDepositFlowStore((state) => state.selectedProgramId);
   const amount = useDepositFlowStore((state) => state.amount);
   const customName = useDepositFlowStore((state) => state.customName);
@@ -84,10 +92,14 @@ export function DepositAgreementStep({ user, programs, cards }: Props) {
       />
 
       <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-        <Button variant="outlined" onClick={() => setCurrentStep(2)}>
+        <Button variant="outlined" disabled={isSubmitting} onClick={() => setCurrentStep(2)}>
           Back
         </Button>
-        <Button variant="contained" disabled={!agreementAccepted}>
+        <Button
+          variant="contained"
+          disabled={!agreementAccepted || isSubmitting}
+          onClick={() => onSubmit(agreementText)}
+        >
           Submit Deposit
         </Button>
       </Stack>

@@ -43,3 +43,20 @@ export type CurrentUserProfile = {
   fullName: string;
   address: string;
 };
+
+export type CreateDepositPayload = {
+  selectedProgramId: string;
+  amount: string;
+  customName: string;
+  paymentMethod: "CASH" | "CARD";
+  selectedCardId: string | null;
+  agreementText: string;
+};
+
+export type CreateDepositResponse = {
+  contractId: string;
+  amount: number;
+  currency: Currency;
+  programName: string;
+  createdAt: string;
+};

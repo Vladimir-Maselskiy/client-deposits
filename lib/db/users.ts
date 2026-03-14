@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import type { CurrentUserProfile, CurrentUserWithDeposits } from "@/types/deposits";
 import { safeDbQuery } from "./safe-query";
-import { mockCards, mockCurrentUser } from "./mock-data";
 
 export async function getCurrentUserWithDeposits(): Promise<CurrentUserWithDeposits | null> {
   return safeDbQuery(
@@ -26,7 +25,7 @@ export async function getCurrentUserWithDeposits(): Promise<CurrentUserWithDepos
           },
         },
       }),
-    mockCurrentUser,
+    null,
     "Failed to load current user with deposits",
   );
 }
@@ -46,7 +45,7 @@ export async function getCurrentUserCards() {
           },
         },
       }),
-    { cards: mockCards },
+    null,
     "Failed to load current user cards",
   );
 
@@ -66,11 +65,7 @@ export async function getCurrentUserProfile(): Promise<CurrentUserProfile | null
           address: true,
         },
       }),
-    {
-      id: mockCurrentUser.id,
-      fullName: mockCurrentUser.fullName,
-      address: mockCurrentUser.address,
-    },
+    null,
     "Failed to load current user profile",
   );
 }
