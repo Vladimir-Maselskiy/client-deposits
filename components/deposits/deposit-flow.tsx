@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, Button, Container, Paper, Stack, Typography } from "@mui/material";
+import { Alert, Box, Button, Paper, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import type {
   CurrentUserProfile,
@@ -43,17 +43,28 @@ export function DepositFlow({ user, programs, cards }: Props) {
   };
 
   return (
-    <Container maxWidth="md" sx={{ py: { xs: 5, md: 8 } }}>
+    <Box sx={{ width: "100%", maxWidth: 1080, mx: "auto", py: { xs: 1, md: 2 } }}>
       <Stack spacing={4}>
-        <Stack spacing={1}>
-          <Typography variant="overline" color="primary.main">
-            New Deposit
-          </Typography>
-          <Typography variant="h3">Open Deposit</Typography>
-          <Typography color="text.secondary">
-            This first slice contains the flow shell and a working program selection step.
-          </Typography>
-        </Stack>
+        <Paper
+          elevation={0}
+          sx={{
+            p: { xs: 3, md: 4 },
+            borderRadius: 5,
+            background:
+              "linear-gradient(135deg, rgba(24,79,61,0.1) 0%, rgba(255,250,244,0.96) 50%, rgba(182,132,26,0.08) 100%)",
+          }}
+        >
+          <Stack spacing={1.5}>
+            <Typography variant="overline" color="primary.main">
+              New Deposit
+            </Typography>
+            <Typography variant="h3">Open Deposit</Typography>
+            <Typography color="text.secondary" maxWidth={720}>
+              Follow the full application flow: choose a program, enter deposit parameters,
+              review the result, and confirm the generated agreement.
+            </Typography>
+          </Stack>
+        </Paper>
 
         {!hasPrograms && (
           <Alert severity="warning">
@@ -68,7 +79,15 @@ export function DepositFlow({ user, programs, cards }: Props) {
           </Alert>
         )}
 
-        <Paper elevation={0} sx={{ p: { xs: 2, md: 4 }, borderRadius: 5 }}>
+        <Paper
+          elevation={0}
+          sx={{
+            p: { xs: 2.5, md: 4 },
+            borderRadius: 5,
+            background:
+              "linear-gradient(180deg, rgba(255,250,244,0.98) 0%, rgba(250,244,235,0.98) 100%)",
+          }}
+        >
           <Stack spacing={4}>
             <DepositStepper activeStep={currentStep} />
             {renderStep()}
@@ -97,6 +116,6 @@ export function DepositFlow({ user, programs, cards }: Props) {
           </Stack>
         </Paper>
       </Stack>
-    </Container>
+    </Box>
   );
 }

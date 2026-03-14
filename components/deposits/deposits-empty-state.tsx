@@ -3,8 +3,15 @@ import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 
 export function DepositsEmptyState() {
   return (
-    <Paper elevation={0} sx={{ p: 4, borderRadius: 4 }}>
-      <Stack spacing={2.5} alignItems="flex-start">
+    <Paper
+      elevation={0}
+      sx={{
+        width: "100%",
+        padding: { xs: "28px 24px", md: "40px 44px" },
+        borderRadius: 5,
+      }}
+    >
+      <Stack spacing={3} alignItems="flex-start" sx={{ maxWidth: 760 }}>
         <Box
           sx={{
             display: "grid",
@@ -26,7 +33,12 @@ export function DepositsEmptyState() {
             Choose a deposit program and open your first contract in a few steps.
           </Typography>
         </Stack>
-        <Button href="/deposits/new" variant="contained" size="large">
+        <Button
+          href="/deposits/new"
+          variant="contained"
+          size="large"
+          sx={{ alignSelf: "flex-start" }}
+        >
           Open Deposit
         </Button>
       </Stack>

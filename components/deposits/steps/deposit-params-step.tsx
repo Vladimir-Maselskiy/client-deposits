@@ -9,6 +9,7 @@ import {
   FormHelperText,
   FormLabel,
   MenuItem,
+  Paper,
   Radio,
   RadioGroup,
   Stack,
@@ -26,6 +27,16 @@ import {
 type Props = {
   cards: UserCardSummary[];
 };
+
+function keepDigitsOnly(value: string) {
+  return value.replace(/\D+/g, "");
+}
+
+function formatAmount(value: string) {
+  const digits = keepDigitsOnly(value);
+
+  return digits.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
 
 export function DepositParamsStep({ cards }: Props) {
   const amount = useDepositFlowStore((state) => state.amount);
@@ -66,76 +77,93 @@ export function DepositParamsStep({ cards }: Props) {
         </Typography>
       </Stack>
 
-      <Controller
-        name="amount"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Amount"
-            placeholder="10000"
-            error={Boolean(errors.amount)}
-            helperText={errors.amount?.message || "Enter the deposit amount"}
-            fullWidth
+      <Paper elevation={0} sx={{ p: 3, borderRadius: 5 }}>
+        <Stack spacing={2.5}>
+          <Controller
+            name="amount"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Amount"
+                placeholder="10000"
+                slotProps={{ inputLabel: { shrink: true } }}
+                error={Boolean(errors.amount)}
+                helperText={errors.amount?.message || "Enter the deposit amount"}
+                inputMode="numeric"
+                value={formatAmount(field.value)}
+                onChange={(event) => field.onChange(formatAmount(event.target.value))}
+                onPaste={(event) => {
+                  event.preventDefault();
+                  const pasted = event.clipboardData.getData("text");
+                  field.onChange(formatAmount(pasted));
+                }}
+                fullWidth
+              />
+            )}
           />
-        )}
-      />
 
-      <Controller
-        name="customName"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Custom Name"
-            placeholder="Vacation Reserve"
-            error={Boolean(errors.customName)}
-            helperText={errors.customName?.message || "Optional field"}
-            fullWidth
+          <Controller
+            name="customName"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Custom Name"
+                placeholder="Vacation Reserve"
+                slotProps={{ inputLabel: { shrink: true } }}
+                error={Boolean(errors.customName)}
+                helperText={errors.customName?.message || "Optional field"}
+                fullWidth
+              />
+            )}
           />
-        )}
-      />
 
-      <Controller
-        name="paymentMethod"
-        control={control}
-        render={({ field }) => (
-          <FormControl error={Boolean(errors.paymentMethod)}>
-            <FormLabel>Payment Method</FormLabel>
-            <RadioGroup row {...field}>
-              <FormControlLabel value="CASH" control={<Radio />} label="Cash" />
-              <FormControlLabel value="CARD" control={<Radio />} label="Card" />
-            </RadioGroup>
-            <FormHelperText>{errors.paymentMethod?.message}</FormHelperText>
-          </FormControl>
-        )}
-      />
+          <Controller
+            name="paymentMethod"
+            control={control}
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.paymentMethod)}>
+                <FormLabel sx={{ mb: 1 }}>Payment Method</FormLabel>
+                <RadioGroup row {...field}>
+                  <FormControlLabel value="CASH" control={<Radio />} label="Cash" />
+                  <FormControlLabel value="CARD" control={<Radio />} label="Card" />
+                </RadioGroup>
+                <FormHelperText>{errors.paymentMethod?.message}</FormHelperText>
+              </FormControl>
+            )}
+          />
+        </Stack>
+      </Paper>
 
       {isCardPayment ? (
-        <Controller
-          name="selectedCardId"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              select
-              label="Card"
-              value={field.value ?? ""}
-              onChange={(event) => field.onChange(event.target.value || null)}
-              error={Boolean(errors.selectedCardId)}
-              helperText={
-                errors.selectedCardId?.message || "Select a user card for payment"
-              }
-              fullWidth
-            >
-              {cards.map((card) => (
-                <MenuItem key={card.id} value={card.id}>
-                  {card.name} - {card.balance} {card.currency}
-                </MenuItem>
-              ))}
-            </TextField>
-          )}
-        />
+        <Paper elevation={0} sx={{ p: 3, borderRadius: 5 }}>
+          <Controller
+            name="selectedCardId"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                select
+                label="Card"
+                slotProps={{ inputLabel: { shrink: true } }}
+                value={field.value ?? ""}
+                onChange={(event) => field.onChange(event.target.value || null)}
+                error={Boolean(errors.selectedCardId)}
+                helperText={
+                  errors.selectedCardId?.message || "Select a user card for payment"
+                }
+                fullWidth
+              >
+                {cards.map((card) => (
+                  <MenuItem key={card.id} value={card.id}>
+                    {card.name} - {card.balance} {card.currency}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          />
+        </Paper>
       ) : (
         <Alert severity="info">
           Cash payment does not require choosing a card.

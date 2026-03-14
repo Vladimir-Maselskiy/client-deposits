@@ -34,9 +34,12 @@ export function SelectProgramStep({ programs }: Props) {
               elevation={0}
               sx={{
                 p: 3,
-                borderRadius: 4,
+                borderRadius: 5,
                 border: "1px solid",
                 borderColor: isSelected ? "primary.main" : "divider",
+                background: isSelected
+                  ? "linear-gradient(135deg, rgba(24,79,61,0.08) 0%, rgba(255,250,244,0.98) 100%)"
+                  : "linear-gradient(180deg, rgba(255,250,244,0.96) 0%, rgba(252,247,238,0.96) 100%)",
               }}
             >
               <Stack

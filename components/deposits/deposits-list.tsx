@@ -17,7 +17,16 @@ export function DepositsList({ contracts }: Props) {
   return (
     <Stack spacing={2}>
       {contracts.map((contract) => (
-        <Paper key={contract.id} elevation={0} sx={{ p: 3, borderRadius: 4 }}>
+        <Paper
+          key={contract.id}
+          elevation={0}
+          sx={{
+            p: 3,
+            borderRadius: 5,
+            background:
+              "linear-gradient(180deg, rgba(255,250,244,0.96) 0%, rgba(252,247,238,0.96) 100%)",
+          }}
+        >
           <Stack spacing={1.5}>
             <Stack
               direction={{ xs: "column", sm: "row" }}
@@ -35,11 +44,11 @@ export function DepositsList({ contracts }: Props) {
               <Chip
                 label={`${contract.amount} ${contract.depositProgram.currency}`}
                 color="primary"
-                variant="outlined"
+                sx={{ alignSelf: { xs: "flex-start", sm: "center" } }}
               />
             </Stack>
             <Typography color="text.secondary">
-              Дата відкриття: {formatDate(contract.createdAt)}
+              Opened on: {formatDate(contract.createdAt)}
             </Typography>
           </Stack>
         </Paper>

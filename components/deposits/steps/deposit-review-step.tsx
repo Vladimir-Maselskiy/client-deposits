@@ -46,7 +46,15 @@ export function DepositReviewStep({ programs, cards }: Props) {
         </Typography>
       </Stack>
 
-      <Paper elevation={0} sx={{ p: 3, borderRadius: 4 }}>
+      <Paper
+        elevation={0}
+        sx={{
+          p: 3,
+          borderRadius: 5,
+          background:
+            "linear-gradient(180deg, rgba(255,250,244,0.96) 0%, rgba(252,247,238,0.96) 100%)",
+        }}
+      >
         <Stack spacing={2}>
           <SummaryRow
             label="Program"

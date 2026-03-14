@@ -59,10 +59,15 @@ export function DepositAgreementStep({ user, programs, cards }: Props) {
       <Paper
         elevation={0}
         sx={{
-          p: 3,
-          borderRadius: 4,
+          p: { xs: 2.5, md: 3.5 },
+          borderRadius: 5,
           whiteSpace: "pre-wrap",
           fontFamily: "var(--font-geist-mono), monospace",
+          fontSize: "0.95rem",
+          lineHeight: 1.8,
+          color: "text.primary",
+          background:
+            "linear-gradient(180deg, rgba(255,252,247,0.98) 0%, rgba(250,244,235,0.98) 100%)",
         }}
       >
         {agreementText}

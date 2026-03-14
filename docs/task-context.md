@@ -283,6 +283,7 @@
 - Done: review step now reads data from Zustand and allows back/forward navigation without re-entering the form.
 - Done: step navigation logic was normalized so program selection only stores state, while explicit buttons control movement between steps.
 - Done: agreement step now generates contract text from user/program/payment data and requires explicit consent before submit becomes available.
+- Done: core pages and flow steps received a visual cleanup pass so the UI is more coherent before the database integration phase.
 - Deferred: submit API, seed, Docker.
 
 ## First Iteration Delivery Order

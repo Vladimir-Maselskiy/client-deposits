@@ -26,7 +26,9 @@ export default function RootLayout({
   return (
     <html lang="uk">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <main className="app-shell">{children}</main>
+        </Providers>
       </body>
     </html>
   );

@@ -10,46 +10,59 @@ const theme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#0f5d46",
-      contrastText: "#f7f4ed",
+      main: "#184f3d",
+      dark: "#123c2e",
+      light: "#2f6d58",
+      contrastText: "#fcf8f1",
     },
     secondary: {
-      main: "#c69214",
+      main: "#b6841a",
     },
     background: {
-      default: "#f3ede3",
-      paper: "#fffaf2",
+      default: "#efe6d8",
+      paper: "#fffaf4",
     },
     text: {
-      primary: "#18211d",
-      secondary: "#58655f",
+      primary: "#14201b",
+      secondary: "#60706a",
     },
-    divider: "#d8d1c3",
+    divider: "#d9cfbf",
     action: {
-      hover: "rgba(15, 93, 70, 0.06)",
+      hover: "rgba(24, 79, 61, 0.08)",
     },
   },
   shape: {
-    borderRadius: 18,
+    borderRadius: 8,
   },
   typography: {
     fontFamily: "var(--font-geist-sans), sans-serif",
+    overline: {
+      fontWeight: 700,
+      letterSpacing: "0.18em",
+    },
     h3: {
       fontWeight: 700,
+      letterSpacing: "-0.04em",
+      lineHeight: 1,
     },
     h4: {
       fontWeight: 700,
     },
     h5: {
       fontWeight: 700,
+      letterSpacing: "-0.02em",
+    },
+    body1: {
+      lineHeight: 1.65,
     },
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: "#f3ede3",
-          color: "#18211d",
+          background:
+            "radial-gradient(circle at top left, rgba(255,250,244,0.95), transparent 28%), linear-gradient(180deg, #efe6d8 0%, #e8dece 100%)",
+          color: "#14201b",
         },
       },
     },
@@ -57,7 +70,9 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundImage: "none",
+          backgroundColor: "#fffaf4",
           border: "1px solid #e1d8ca",
+          boxShadow: "0 18px 45px rgba(74, 61, 42, 0.08)",
         },
       },
     },
@@ -65,6 +80,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 18,
+          alignItems: "center",
         },
       },
     },
@@ -73,6 +89,41 @@ const theme = createTheme({
         root: {
           textTransform: "none",
           fontWeight: 600,
+          borderRadius: 999,
+          padding: "12px 26px",
+          minHeight: 48,
+          minWidth: 160,
+          justifyContent: "center",
+        },
+        containedPrimary: {
+          color: "#fcf8f1",
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: 999,
+          fontWeight: 600,
+        },
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        variant: "outlined",
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#fffdf9",
+        },
+      },
+    },
+    MuiStepper: {
+      styleOverrides: {
+        root: {
+          paddingInline: 0,
         },
       },
     },
