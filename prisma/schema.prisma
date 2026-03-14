@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Currency {
+  UAH
+  USD
+  EUR
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+}
+
+model User {
+  id        String     @id @default(cuid())
+  fullName  String
+  address   String
+  cards     Card[]
+  contracts Contract[]
+  createdAt DateTime   @default(now())
+}
+
+model Card {
+  id        String     @id @default(cuid())
+  name      String
+  balance   Float
+  currency  Currency
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
+  contracts Contract[]
+}
+
+model DepositProgram {
+  id         String     @id @default(cuid())
+  name       String
+  rate       Float
+  termMonths Int
+  currency   Currency
+  contracts  Contract[]
+}
+
+model Contract {
+  id               String        @id @default(cuid())
+  userId           String
+  depositProgramId String
+  cardId           String?
+  amount           Float
+  customName       String?
+  paymentMethod    PaymentMethod
+  agreementText    String
+  createdAt        DateTime      @default(now())
+
+  user           User           @relation(fields: [userId], references: [id])
+  depositProgram DepositProgram @relation(fields: [depositProgramId], references: [id])
+  card           Card?          @relation(fields: [cardId], references: [id])
+}
