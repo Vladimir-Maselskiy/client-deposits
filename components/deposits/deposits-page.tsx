@@ -1,5 +1,4 @@
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
-import Link from "next/link";
+import { Alert, Box, Button, Container, Stack, Typography } from "@mui/material";
 import type { CurrentUserWithDeposits } from "@/types/deposits";
 import { DepositsEmptyState } from "./deposits-empty-state";
 import { DepositsList } from "./deposits-list";
@@ -10,6 +9,7 @@ type Props = {
 
 export function DepositsPage({ user }: Props) {
   const hasContracts = Boolean(user?.contracts.length);
+  const hasUser = Boolean(user);
 
   return (
     <Box sx={{ py: { xs: 5, md: 8 } }}>
@@ -24,23 +24,26 @@ export function DepositsPage({ user }: Props) {
               <Typography variant="overline" color="primary.main">
                 Client Deposits
               </Typography>
-              <Typography variant="h3">Мої вклади</Typography>
+              <Typography variant="h3">My Deposits</Typography>
               <Typography color="text.secondary" maxWidth={720}>
-                {user
-                  ? `Поточний клієнт: ${user.fullName}. Переглядайте чинні договори або відкрийте новий вклад.`
-                  : "У базі поки немає користувача. Після seed можна буде переглядати й відкривати вклади."}
+                {hasUser
+                  ? `Current client: ${user.fullName}. Review active contracts or open a new deposit.`
+                  : "Database data is not available yet. Once the database and seed are ready, deposits will appear here."}
               </Typography>
             </Stack>
-            <Button component={Link} href="/deposits/new" variant="contained" size="large">
-              Новий вклад
+            <Button href="/deposits/new" variant="contained" size="large">
+              New Deposit
             </Button>
           </Stack>
 
-          {hasContracts ? (
-            <DepositsList contracts={user!.contracts} />
-          ) : (
-            <DepositsEmptyState />
+          {!hasUser && (
+            <Alert severity="warning">
+              The page is in fallback mode because the current user could not be loaded from
+              the database.
+            </Alert>
           )}
+
+          {hasContracts ? <DepositsList contracts={user.contracts} /> : <DepositsEmptyState />}
         </Stack>
       </Container>
     </Box>

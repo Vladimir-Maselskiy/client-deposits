@@ -1,42 +1,53 @@
 import { prisma } from "@/lib/prisma";
 import type { CurrentUserWithDeposits } from "@/types/deposits";
+import { safeDbQuery } from "./safe-query";
 
 export async function getCurrentUserWithDeposits(): Promise<CurrentUserWithDeposits | null> {
-  return prisma.user.findFirst({
-    orderBy: {
-      createdAt: "asc",
-    },
-    include: {
-      cards: {
+  return safeDbQuery(
+    () =>
+      prisma.user.findFirst({
         orderBy: {
-          name: "asc",
-        },
-      },
-      contracts: {
-        orderBy: {
-          createdAt: "desc",
+          createdAt: "asc",
         },
         include: {
-          depositProgram: true,
+          cards: {
+            orderBy: {
+              name: "asc",
+            },
+          },
+          contracts: {
+            orderBy: {
+              createdAt: "desc",
+            },
+            include: {
+              depositProgram: true,
+            },
+          },
         },
-      },
-    },
-  });
+      }),
+    null,
+    "Failed to load current user with deposits",
+  );
 }
 
 export async function getCurrentUserCards() {
-  const user = await prisma.user.findFirst({
-    orderBy: {
-      createdAt: "asc",
-    },
-    include: {
-      cards: {
+  const user = await safeDbQuery(
+    () =>
+      prisma.user.findFirst({
         orderBy: {
-          name: "asc",
+          createdAt: "asc",
         },
-      },
-    },
-  });
+        include: {
+          cards: {
+            orderBy: {
+              name: "asc",
+            },
+          },
+        },
+      }),
+    null,
+    "Failed to load current user cards",
+  );
 
   return user?.cards ?? [];
 }

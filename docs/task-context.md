@@ -272,10 +272,12 @@
 
 ## Progress
 - Done: app-level `Providers` with `React Query` and `MUI`.
+- Done: `MUI` App Router integration was adjusted to use the cache provider needed to avoid Emotion hydration mismatch.
 - Done: root route now redirects to `/deposits`.
 - Done: DB helper modules for current user, cards, programs, and contracts reads.
 - Done: `/deposits` page with empty state and contracts list UI.
 - Done: `/deposits/new` page with flow shell, stepper, Zustand store, and working step 1 program selection.
+- Done: DB read helpers now fail safely and return fallback values when Prisma cannot reach the database during development.
 - Deferred: step 2 parameters form, review step, agreement step, submit API, seed, Docker.
 
 ## First Iteration Delivery Order

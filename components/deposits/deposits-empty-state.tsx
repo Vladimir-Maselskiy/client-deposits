@@ -1,6 +1,5 @@
 import AddCircleOutlineRounded from "@mui/icons-material/AddCircleOutlineRounded";
 import { Box, Button, Paper, Stack, Typography } from "@mui/material";
-import Link from "next/link";
 
 export function DepositsEmptyState() {
   return (
@@ -21,14 +20,14 @@ export function DepositsEmptyState() {
         </Box>
         <Stack spacing={1}>
           <Typography variant="h5">
-            У вас ще немає відкритих вкладів, але це легко виправити
+            You do not have any open deposits yet, but that is easy to fix.
           </Typography>
           <Typography color="text.secondary">
-            Оберіть депозитну програму та відкрийте перший вклад у кілька кроків.
+            Choose a deposit program and open your first contract in a few steps.
           </Typography>
         </Stack>
-        <Button component={Link} href="/deposits/new" variant="contained" size="large">
-          Відкрити депозит
+        <Button href="/deposits/new" variant="contained" size="large">
+          Open Deposit
         </Button>
       </Stack>
     </Paper>
