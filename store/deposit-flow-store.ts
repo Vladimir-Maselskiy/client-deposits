@@ -12,6 +12,12 @@ type DepositFlowState = {
   agreementAccepted: boolean;
   setCurrentStep: (step: number) => void;
   setSelectedProgramId: (programId: string) => void;
+  setDepositParams: (params: {
+    amount: string;
+    customName: string;
+    paymentMethod: "CASH" | "CARD";
+    selectedCardId: string | null;
+  }) => void;
   resetFlow: () => void;
 };
 
@@ -30,5 +36,13 @@ export const useDepositFlowStore = create<DepositFlowState>((set) => ({
   setCurrentStep: (step) => set({ currentStep: step }),
   setSelectedProgramId: (programId) =>
     set({ selectedProgramId: programId, currentStep: 1 }),
+  setDepositParams: (params) =>
+    set({
+      amount: params.amount,
+      customName: params.customName,
+      paymentMethod: params.paymentMethod,
+      selectedCardId: params.paymentMethod === "CARD" ? params.selectedCardId : null,
+      currentStep: 2,
+    }),
   resetFlow: () => set(initialState),
 }));

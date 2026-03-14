@@ -278,7 +278,8 @@
 - Done: `/deposits` page with empty state and contracts list UI.
 - Done: `/deposits/new` page with flow shell, stepper, Zustand store, and working step 1 program selection.
 - Done: DB read helpers now fail safely and return fallback values when Prisma cannot reach the database during development.
-- Deferred: step 2 parameters form, review step, agreement step, submit API, seed, Docker.
+- Done: step 2 parameters form now exists with `React Hook Form + Zod`, conditional card field, and Zustand synchronization.
+- Deferred: review step, agreement step, submit API, seed, Docker.
 
 ## First Iteration Delivery Order
 1. Finalize dependency list.
