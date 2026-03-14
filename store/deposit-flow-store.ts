@@ -34,8 +34,7 @@ const initialState = {
 export const useDepositFlowStore = create<DepositFlowState>((set) => ({
   ...initialState,
   setCurrentStep: (step) => set({ currentStep: step }),
-  setSelectedProgramId: (programId) =>
-    set({ selectedProgramId: programId, currentStep: 1 }),
+  setSelectedProgramId: (programId) => set({ selectedProgramId: programId }),
   setDepositParams: (params) =>
     set({
       amount: params.amount,

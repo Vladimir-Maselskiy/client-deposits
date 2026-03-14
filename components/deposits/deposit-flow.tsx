@@ -6,6 +6,7 @@ import type { DepositProgramSummary, UserCardSummary } from "@/types/deposits";
 import { useDepositFlowStore } from "@/store/deposit-flow-store";
 import { DepositStepper } from "./deposit-stepper";
 import { DepositParamsStep } from "./steps/deposit-params-step";
+import { DepositReviewStep } from "./steps/deposit-review-step";
 import { SelectProgramStep } from "./steps/select-program-step";
 
 type Props = {
@@ -28,10 +29,14 @@ export function DepositFlow({ programs, cards }: Props) {
       return <DepositParamsStep cards={cards} />;
     }
 
+    if (currentStep === 2) {
+      return <DepositReviewStep programs={programs} cards={cards} />;
+    }
+
     return (
       <Alert severity="info">
-        Review and agreement steps will be implemented next. The flow already preserves the
-        selected program and the entered deposit parameters.
+        The agreement step will be implemented next. The flow already preserves the selected
+        program and the entered deposit parameters.
       </Alert>
     );
   };
@@ -53,6 +58,12 @@ export function DepositFlow({ programs, cards }: Props) {
           <Alert severity="warning">
             Deposit programs are not available yet. This usually means the database is not
             connected or seed data has not been created.
+          </Alert>
+        )}
+
+        {hasPrograms && programs.some((program) => program.id.startsWith("mock-")) && (
+          <Alert severity="info">
+            Demo deposit programs are currently shown because the database is not connected yet.
           </Alert>
         )}
 

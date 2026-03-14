@@ -278,8 +278,11 @@
 - Done: `/deposits` page with empty state and contracts list UI.
 - Done: `/deposits/new` page with flow shell, stepper, Zustand store, and working step 1 program selection.
 - Done: DB read helpers now fail safely and return fallback values when Prisma cannot reach the database during development.
+- Done: development fallback data now exists for user, cards, and deposit programs so the flow can be exercised before the real DB is ready.
 - Done: step 2 parameters form now exists with `React Hook Form + Zod`, conditional card field, and Zustand synchronization.
-- Deferred: review step, agreement step, submit API, seed, Docker.
+- Done: review step now reads data from Zustand and allows back/forward navigation without re-entering the form.
+- Done: step navigation logic was normalized so program selection only stores state, while explicit buttons control movement between steps.
+- Deferred: agreement step, submit API, seed, Docker.
 
 ## First Iteration Delivery Order
 1. Finalize dependency list.
@@ -340,3 +343,9 @@
 - There is an existing user change in `tsconfig.json`; future edits must avoid overwriting it blindly.
 - The exact startup strategy for migrations and seed inside Docker still needs to be chosen.
 - "Exactly 10 seconds" should be implemented in a way that is deterministic and easy to verify locally.
+
+## Cleanup After Real DB Connection
+- Remove development fallback data from `lib/db/mock-data.ts`.
+- Remove mock fallbacks from `lib/db/users.ts` and `lib/db/deposit-programs.ts`.
+- Remove the demo-data alert from `components/deposits/deposit-flow.tsx`.
+- Leave only Prisma-backed reads once the database and seed are working reliably.
