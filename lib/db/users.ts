@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import type { CurrentUserWithDeposits } from "@/types/deposits";
+import type { CurrentUserProfile, CurrentUserWithDeposits } from "@/types/deposits";
 import { safeDbQuery } from "./safe-query";
 import { mockCards, mockCurrentUser } from "./mock-data";
 
@@ -51,4 +51,26 @@ export async function getCurrentUserCards() {
   );
 
   return user?.cards ?? [];
+}
+
+export async function getCurrentUserProfile(): Promise<CurrentUserProfile | null> {
+  return safeDbQuery(
+    () =>
+      prisma.user.findFirst({
+        orderBy: {
+          createdAt: "asc",
+        },
+        select: {
+          id: true,
+          fullName: true,
+          address: true,
+        },
+      }),
+    {
+      id: mockCurrentUser.id,
+      fullName: mockCurrentUser.fullName,
+      address: mockCurrentUser.address,
+    },
+    "Failed to load current user profile",
+  );
 }

@@ -282,7 +282,8 @@
 - Done: step 2 parameters form now exists with `React Hook Form + Zod`, conditional card field, and Zustand synchronization.
 - Done: review step now reads data from Zustand and allows back/forward navigation without re-entering the form.
 - Done: step navigation logic was normalized so program selection only stores state, while explicit buttons control movement between steps.
-- Deferred: agreement step, submit API, seed, Docker.
+- Done: agreement step now generates contract text from user/program/payment data and requires explicit consent before submit becomes available.
+- Deferred: submit API, seed, Docker.
 
 ## First Iteration Delivery Order
 1. Finalize dependency list.

@@ -2,19 +2,25 @@
 
 import { Alert, Button, Container, Paper, Stack, Typography } from "@mui/material";
 import Link from "next/link";
-import type { DepositProgramSummary, UserCardSummary } from "@/types/deposits";
+import type {
+  CurrentUserProfile,
+  DepositProgramSummary,
+  UserCardSummary,
+} from "@/types/deposits";
 import { useDepositFlowStore } from "@/store/deposit-flow-store";
 import { DepositStepper } from "./deposit-stepper";
+import { DepositAgreementStep } from "./steps/deposit-agreement-step";
 import { DepositParamsStep } from "./steps/deposit-params-step";
 import { DepositReviewStep } from "./steps/deposit-review-step";
 import { SelectProgramStep } from "./steps/select-program-step";
 
 type Props = {
+  user: CurrentUserProfile | null;
   programs: DepositProgramSummary[];
   cards: UserCardSummary[];
 };
 
-export function DepositFlow({ programs, cards }: Props) {
+export function DepositFlow({ user, programs, cards }: Props) {
   const currentStep = useDepositFlowStore((state) => state.currentStep);
   const selectedProgramId = useDepositFlowStore((state) => state.selectedProgramId);
   const setCurrentStep = useDepositFlowStore((state) => state.setCurrentStep);
@@ -33,12 +39,7 @@ export function DepositFlow({ programs, cards }: Props) {
       return <DepositReviewStep programs={programs} cards={cards} />;
     }
 
-    return (
-      <Alert severity="info">
-        The agreement step will be implemented next. The flow already preserves the selected
-        program and the entered deposit parameters.
-      </Alert>
-    );
+    return <DepositAgreementStep user={user} programs={programs} cards={cards} />;
   };
 
   return (

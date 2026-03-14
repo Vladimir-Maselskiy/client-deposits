@@ -37,3 +37,9 @@ export type CurrentUserWithDeposits = {
   cards: UserCardSummary[];
   contracts: DepositContractSummary[];
 };
+
+export type CurrentUserProfile = {
+  id: string;
+  fullName: string;
+  address: string;
+};

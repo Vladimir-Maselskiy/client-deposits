@@ -18,6 +18,7 @@ type DepositFlowState = {
     paymentMethod: "CASH" | "CARD";
     selectedCardId: string | null;
   }) => void;
+  setAgreementAccepted: (accepted: boolean) => void;
   resetFlow: () => void;
 };
 
@@ -43,5 +44,6 @@ export const useDepositFlowStore = create<DepositFlowState>((set) => ({
       selectedCardId: params.paymentMethod === "CARD" ? params.selectedCardId : null,
       currentStep: 2,
     }),
+  setAgreementAccepted: (accepted) => set({ agreementAccepted: accepted }),
   resetFlow: () => set(initialState),
 }));
