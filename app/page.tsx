@@ -1,4 +1,4 @@
-import { Paper, Stack, Typography, Button } from "@mui/material";
+import { Button, Paper, Stack, Typography } from "@mui/material";
 
 export default function Home() {
   return (
@@ -24,14 +24,32 @@ export default function Home() {
           через Google. Потік відкриття вкладу, договори, картки та формування заяви
           працюють для обох режимів.
         </Typography>
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-          <Button href="/deposits" variant="contained">
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1.5}
+          useFlexGap
+          flexWrap="wrap"
+          alignItems={{ xs: "stretch", sm: "center" }}
+        >
+          <Button
+            href="/deposits"
+            variant="contained"
+            sx={{ width: { xs: "100%", sm: "auto" } }}
+          >
             Перейти до вкладів як демо-користувач
           </Button>
-          <Button href="/deposits/new" variant="outlined">
+          <Button
+            href="/deposits/new"
+            variant="outlined"
+            sx={{ width: { xs: "100%", sm: "auto" } }}
+          >
             Одразу до нового вкладу
           </Button>
-          <Button href="/api-docs" variant="outlined">
+          <Button
+            href="/api-docs"
+            variant="outlined"
+            sx={{ width: { xs: "100%", sm: "auto" } }}
+          >
             Відкрити API документацію
           </Button>
         </Stack>

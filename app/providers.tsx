@@ -90,9 +90,9 @@ const theme = createTheme({
           textTransform: "none",
           fontWeight: 600,
           borderRadius: 999,
-          padding: "12px 26px",
-          minHeight: 48,
-          minWidth: 160,
+          padding: "10px 18px",
+          minHeight: 42,
+          minWidth: 0,
           justifyContent: "center",
         },
         containedPrimary: {

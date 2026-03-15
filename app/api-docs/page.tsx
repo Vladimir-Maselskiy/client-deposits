@@ -1,5 +1,5 @@
 import { Paper, Stack, Typography } from "@mui/material";
-import { SwaggerClient } from "./swagger-client";
+import { SwaggerSection } from "./swagger-section";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +34,7 @@ export default function ApiDocsPage() {
           overflow: "hidden",
         }}
       >
-        <SwaggerClient specUrl="/api/openapi" />
+        <SwaggerSection />
       </Paper>
     </Stack>
   );
