@@ -85,6 +85,17 @@ docker compose up --build
 - застосовує Prisma migrations
 - автоматично виконує seed даних
 
+Що покривається з коробки:
+
+- demo-user сценарій працює одразу після `docker compose up --build`
+- `NEXTAUTH_SECRET` для demo runtime вже закладений у Docker-конфіг
+- Google OAuth credentials не зберігаються в репозиторії і передаються окремо
+
+> Важливо: повністю готовий до перевірки сценарій з однієї команди це
+> `docker compose up --build` у demo mode.
+> Google login є додатковою опцією і потребує окремо переданих
+> `GOOGLE_CLIENT_ID` та `GOOGLE_CLIENT_SECRET`.
+
 Адреси застосунку:
 
 - застосунок: `http://localhost:3000`
@@ -152,7 +163,13 @@ Seed є ідемпотентним і безпечно виконується п
 
 ### Опціональна Google auth
 
-Щоб увімкнути вхід через Google, задай у `.env`:
+Базовий demo flow не потребує додаткових секретів і працює без Google OAuth.
+
+> Увага: через GitHub Push Protection реальні Google OAuth credentials не можуть
+> зберігатися в репозиторії. Для перевірки Google login їх потрібно додати
+> окремо в `.env`.
+
+Щоб увімкнути вхід через Google, додай видані окремо credentials у `.env`:
 
 ```env
 NEXTAUTH_SECRET="your-random-secret"
@@ -163,6 +180,10 @@ GOOGLE_CLIENT_SECRET="your-google-client-secret"
 Важливі примітки:
 
 - без цих змінних demo-user flow продовжує працювати
+- через GitHub Push Protection реальні Google OAuth credentials не зберігаються в
+  репозиторії
+- для повної перевірки Google login потрібно підставити передані окремо
+  `GOOGLE_CLIENT_ID` і `GOOGLE_CLIENT_SECRET`
 - Google sign-in навмисно мапиться лише за `profile name`, як було вказано в
   завданні
 - для демо цього достатньо, але для production така схема ідентифікації
