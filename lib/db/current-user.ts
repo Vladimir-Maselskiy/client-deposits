@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { safeDbQuery } from "./safe-query";
 
-export async function getDefaultCurrentUser() {
+type DefaultCurrentUser = Awaited<ReturnType<typeof prisma.user.findFirst>>;
+
+export async function getDefaultCurrentUser(): Promise<DefaultCurrentUser> {
   return safeDbQuery(
     () =>
       prisma.user.findFirst({

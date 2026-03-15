@@ -28,6 +28,7 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/client_deposits?schema=public
+      NEXTAUTH_SECRET: d4b3ed4f648a0e3b835b812728a0bf7b9169c49e3cf45dfdd468a57a67665a8f
     command: >
       sh -c "npx prisma migrate deploy &&
              npx prisma db seed &&

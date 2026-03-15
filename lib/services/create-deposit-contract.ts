@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getActiveUser } from "@/lib/auth/active-user";
 import type { CreateDepositPayload, CreateDepositResponse } from "@/types/deposits";
@@ -37,7 +38,7 @@ export async function createDepositContract(
     throw new CreateDepositError("Текст договору є обов’язковим");
   }
 
-  const contract = await prisma.$transaction(async (tx) => {
+  const contract = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     let cardId: string | null = null;
 
     if (payload.paymentMethod === "CARD") {

@@ -10,6 +10,8 @@ declare module "next-auth" {
   }
 
   interface User {
+    id: string;
+    fullName?: string;
     authMode?: "demo" | "google";
   }
 }

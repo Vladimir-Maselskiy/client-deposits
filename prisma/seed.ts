@@ -1,4 +1,4 @@
-import { Currency, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -25,14 +25,14 @@ async function main() {
     update: {
       name: "Salary Card",
       balance: 125000,
-      currency: Currency.UAH,
+      currency: "UAH",
       userId: user.id,
     },
     create: {
       id: "mock-card-uah",
       name: "Salary Card",
       balance: 125000,
-      currency: Currency.UAH,
+      currency: "UAH",
       userId: user.id,
     },
   });
@@ -44,14 +44,14 @@ async function main() {
     update: {
       name: "Travel Card",
       balance: 4200,
-      currency: Currency.USD,
+      currency: "USD",
       userId: user.id,
     },
     create: {
       id: "mock-card-usd",
       name: "Travel Card",
       balance: 4200,
-      currency: Currency.USD,
+      currency: "USD",
       userId: user.id,
     },
   });
@@ -64,14 +64,14 @@ async function main() {
       name: "Stable Income",
       rate: 15.5,
       termMonths: 6,
-      currency: Currency.UAH,
+      currency: "UAH",
     },
     create: {
       id: "mock-program-uah",
       name: "Stable Income",
       rate: 15.5,
       termMonths: 6,
-      currency: Currency.UAH,
+      currency: "UAH",
     },
   });
 
@@ -83,14 +83,14 @@ async function main() {
       name: "Global Reserve",
       rate: 4.2,
       termMonths: 12,
-      currency: Currency.USD,
+      currency: "USD",
     },
     create: {
       id: "mock-program-usd",
       name: "Global Reserve",
       rate: 4.2,
       termMonths: 12,
-      currency: Currency.USD,
+      currency: "USD",
     },
   });
 
@@ -102,14 +102,14 @@ async function main() {
       name: "Euro Growth",
       rate: 3.8,
       termMonths: 9,
-      currency: Currency.EUR,
+      currency: "EUR",
     },
     create: {
       id: "mock-program-eur",
       name: "Euro Growth",
       rate: 3.8,
       termMonths: 9,
-      currency: Currency.EUR,
+      currency: "EUR",
     },
   });
 

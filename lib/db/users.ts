@@ -1,7 +1,15 @@
 import { prisma } from "@/lib/prisma";
-import type { CurrentUserProfile, CurrentUserWithDeposits } from "@/types/deposits";
+import type {
+  CurrentUserProfile,
+  CurrentUserWithDeposits,
+  UserCardSummary,
+} from "@/types/deposits";
 import { safeDbQuery } from "./safe-query";
 import { getActiveUser } from "@/lib/auth/active-user";
+
+type CurrentUserCardsResult = {
+  cards: UserCardSummary[];
+} | null;
 
 export async function getCurrentUserWithDeposits(): Promise<CurrentUserWithDeposits | null> {
   const currentUser = await getActiveUser();
@@ -37,14 +45,14 @@ export async function getCurrentUserWithDeposits(): Promise<CurrentUserWithDepos
   );
 }
 
-export async function getCurrentUserCards() {
+export async function getCurrentUserCards(): Promise<UserCardSummary[]> {
   const currentUser = await getActiveUser();
 
   if (!currentUser) {
     return [];
   }
 
-  const user = await safeDbQuery(
+  const user = await safeDbQuery<CurrentUserCardsResult>(
     () =>
       prisma.user.findUnique({
         where: {

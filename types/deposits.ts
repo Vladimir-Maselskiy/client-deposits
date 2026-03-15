@@ -1,4 +1,6 @@
-import type { Currency, PaymentMethod } from "@prisma/client";
+export type Currency = "UAH" | "USD" | "EUR";
+
+export type PaymentMethod = "CASH" | "CARD";
 
 export type DepositProgramSummary = {
   id: string;

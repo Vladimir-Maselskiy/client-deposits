@@ -1,8 +1,9 @@
-import { Currency } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
+type Currency = "UAH" | "USD" | "EUR";
+
 function createRandomBalance(currency: Currency) {
-  if (currency === Currency.UAH) {
+  if (currency === "UAH") {
     return 50000 + Math.floor(Math.random() * 100000);
   }
 
@@ -13,13 +14,13 @@ function createGoogleCards() {
   return [
     {
       name: "Google Primary Card",
-      balance: createRandomBalance(Currency.UAH),
-      currency: Currency.UAH,
+      balance: createRandomBalance("UAH"),
+      currency: "UAH" as const,
     },
     {
       name: "Google Travel Card",
-      balance: createRandomBalance(Currency.USD),
-      currency: Currency.USD,
+      balance: createRandomBalance("USD"),
+      currency: "USD" as const,
     },
   ];
 }

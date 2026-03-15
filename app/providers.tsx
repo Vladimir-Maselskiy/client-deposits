@@ -34,8 +34,9 @@ const theme = createTheme({
   shape: {
     borderRadius: 8,
   },
-  typography: {
-    fontFamily: "var(--font-geist-sans), sans-serif",
+    typography: {
+      fontFamily:
+        '"Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif',
     overline: {
       fontWeight: 700,
       letterSpacing: "0.18em",
