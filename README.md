@@ -1,56 +1,249 @@
 # Client Deposits
 
-Full-stack test assignment for a client deposits module built with `Next.js`, `TypeScript`, `Prisma`, `React Query`, `Zustand`, `React Hook Form`, `Zod`, and `Material UI`.
+Повноцінне full-stack тестове завдання для модуля депозитів клієнта, побудоване
+на `Next.js App Router`, `TypeScript`, `Prisma`, `React Query`, `Zustand`,
+`React Hook Form`, `Zod`, `Material UI` та `PostgreSQL`.
 
-## Current Scope
-- "My Deposits" page with empty state and deposits list
-- Multi-step deposit opening flow
-- Agreement generation with consent step
-- API-based deposit creation with a fixed 10-second response delay
-- Prisma seed data for a demo user, cards, and deposit programs
-- No-auth demo mode that resolves the first user from the database
-- Optional auth entry points for `Demo user` and `Google sign-in`
+## Огляд
 
-## Local Run
-1. Create `.env` from [.env.example](/c:/GitHub/client-deposits/.env.example).
-2. Make sure PostgreSQL is running locally on port `5432`.
-3. Run Prisma migration and seed:
+Застосунок покриває повний сценарій відкриття депозиту, описаний у завданні:
+
+- сторінка «Мої вклади» з empty state і списком договорів
+- 4-кроковий процес відкриття депозиту
+- генерація заяви-договору з чекбоксом згоди
+- API-створення договору з фіксованою затримкою відповіді `10` секунд
+- автоматичні міграції та seed під час Docker-запуску
+- додатково реалізовано: Google auth і Swagger/OpenAPI
+
+## Що реалізовано
+
+### Основні вимоги
+
+- сутності `Users`, `Cards`, `DepositPrograms` і `Contracts` змодельовані в
+  Prisma
+- no-auth режим працює через першого користувача, знайденого в базі
+- `/deposits` показує або empty state, або список створених договорів
+- `/deposits/new` містить багатокроковий flow зі станом у Zustand
+- внесення з картки перевіряє баланс і відповідність валюти до створення
+  договору
+- бекенд відповідає рівно через `10` секунд як при успіху, так і при помилці
+- під час запиту frontend блокує взаємодію з інтерфейсом
+- проєкт запускається командою `docker compose up --build`
+
+### Додаткові можливості
+
+- Google-авторизація через `next-auth`
+- окремий вхід як demo user
+- `Logout` для Google-auth сценарію
+- Swagger UI і raw OpenAPI spec
+- адаптований stepper для вузьких екранів
+
+## Технології
+
+- `Next.js 16`
+- `React 19`
+- `TypeScript`
+- `Prisma`
+- `PostgreSQL`
+- `React Query`
+- `Zustand`
+- `React Hook Form`
+- `Zod`
+- `Material UI`
+- `Docker Compose`
+- `NextAuth`
+
+## Модель даних
+
+Основні сутності:
+
+- `User`
+- `Card`
+- `DepositProgram`
+- `Contract`
+
+Ключові файли:
+
+- [schema.prisma](/c:/GitHub/client-deposits/prisma/schema.prisma)
+- [seed.ts](/c:/GitHub/client-deposits/prisma/seed.ts)
+- [migration.sql](/c:/GitHub/client-deposits/prisma/migrations/20260314193000_init/migration.sql)
+
+## Швидкий старт
+
+### Рекомендований сценарій: Docker
+
+Це основний шлях для демонстрації та перевірки проєкту.
+
+```bash
+docker compose up --build
+```
+
+Що робить ця команда:
+
+- запускає PostgreSQL
+- збирає і запускає Next.js застосунок
+- застосовує Prisma migrations
+- автоматично виконує seed даних
+
+Адреси застосунку:
+
+- застосунок: `http://localhost:3000`
+- сторінка вкладів: `http://localhost:3000/deposits`
+- створення нового вкладу: `http://localhost:3000/deposits/new`
+- Swagger UI: `http://localhost:3000/api-docs`
+- OpenAPI JSON: `http://localhost:3000/api/openapi`
+
+## Локальна розробка
+
+Цей режим зручний, якщо потрібен hot reload, а PostgreSQL залишається в Docker.
+
+### 1. Налаштування оточення
+
+Створи `.env` на основі [.env.example](/c:/GitHub/client-deposits/.env.example).
+
+Мінімально потрібна змінна:
+
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/client_deposits?schema=public"
+```
+
+### 2. Запуск тільки бази даних
+
+```bash
+docker compose up -d db
+```
+
+### 3. Міграції та seed
 
 ```bash
 npx prisma migrate deploy
 npx prisma db seed
 ```
 
-4. Build and start the app:
+### 4. Локальний запуск Next.js
+
+Для Windows PowerShell:
 
 ```bash
-npm run build
-npm run start
+npm.cmd run dev
 ```
 
-## Docker Run
-Run:
+Якщо `app` контейнер Docker ще займає порт `3000`, спочатку зупини його:
+
+```bash
+docker compose stop app
+```
+
+## Тестові дані
+
+Seed створює:
+
+- 1 demo user
+- 2 demo картки
+- 3 депозитні програми
+
+Seed є ідемпотентним і безпечно виконується повторно.
+
+## Авторизація
+
+### Demo mode
+
+Без налаштування Google OAuth проєкт усе одно працює через seeded demo user.
+
+### Опціональна Google auth
+
+Щоб увімкнути вхід через Google, задай у `.env`:
+
+```env
+NEXTAUTH_SECRET="your-random-secret"
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+```
+
+## API документація
+
+Swagger/OpenAPI доступні за адресами:
+
+- Swagger UI: `http://localhost:3000/api-docs`
+- OpenAPI JSON: `http://localhost:3000/api/openapi`
+
+Документований endpoint:
+
+- `POST /api/deposits`
+
+## Основні бізнес-правила
+
+- активний користувач у demo mode визначається як перший користувач із БД
+- для створення вкладу потрібна валідна депозитна програма
+- сума має бути більшою за нуль
+- для внесення типу `CARD`:
+  - картка має бути обрана
+  - картка має належати поточному користувачу
+  - валюта картки має збігатися з валютою вкладу
+  - на картці має бути достатньо коштів
+- текст договору є обов’язковим перед відправленням
+
+## UX-особливості
+
+- запит на створення договору навмисно затримується на `10` секунд
+- під час очікування UI показує спінер і блокує взаємодію
+- stepper має компактну мобільну версію на вузьких екранах
+- інтерфейс і текст договору локалізовані українською
+
+## Сценарій помилки
+
+Помилкові відповіді так само повертаються лише через `10` секунд, як і успішні.
+
+Отримати помилку із затримкою можна за таких умов:
+
+- ввести суму меншу або рівну `0`
+- обрати `CARD` і не вибрати картку
+- обрати картку, валюта якої не збігається з валютою депозитної програми
+- ввести суму, що перевищує баланс обраної картки
+- відправити форму без валідного тексту договору
+- надіслати запит із неіснуючим `selectedProgramId`
+
+Практичний сценарій через UI:
+
+1. Відкрити `http://localhost:3000/deposits/new`
+2. Обрати програму в одній валюті
+3. Обрати спосіб внесення `CARD`
+4. Вибрати картку в іншій валюті або вказати суму більшу за доступний баланс
+5. Дійти до останнього кроку і натиснути `Оформити`
+
+Очікуваний результат:
+
+- спінер і блокування інтерфейсу залишаються активними `10` секунд
+- після затримки API повертає повідомлення про помилку замість створення
+  договору
+
+## Структура проєкту
+
+Верхньорівнева структура:
+
+- [app](/client-deposits/app) - маршрути, API handlers, docs pages
+- [components](/client-deposits/components) - UI та кроки flow
+- [lib](/client-deposits/lib) - доступ до БД, сервіси, auth, OpenAPI config
+- [prisma](/client-deposits/prisma) - schema, migration, seed
+- [store](/client-deposits/store) - Zustand state для flow
+- [types](/client-deposits/types) - спільні TypeScript-типи
+
+## Корисні команди
 
 ```bash
 docker compose up --build
+docker compose up -d db
+docker compose stop app
+npx prisma migrate deploy
+npx prisma db seed
+npm.cmd run dev
+npm run build
+npx.cmd tsc --noEmit
+npm run lint
 ```
 
-This starts:
-- PostgreSQL
-- the Next.js app on `http://localhost:3000`
-- Prisma migration deployment
-- Prisma seed
+## Підсумок
 
-## API Docs
-- Swagger UI is available at `http://localhost:3000/api-docs`
-- Raw OpenAPI JSON is available at `http://localhost:3000/api/openapi`
-
-## Notes
-- Current demo mode uses the first user in the database as the active user.
-- Seed is idempotent and safe to rerun.
-- Future optional Google auth should use explicit identity mapping and must not rely on the current demo user as an implicit authenticated identity.
-
-## Optional Google Auth
-- Configure `NEXTAUTH_SECRET`, `GOOGLE_CLIENT_ID`, and `GOOGLE_CLIENT_SECRET` in `.env`.
-- Without these variables, the demo-user flow still works and the Google button stays disabled.
-- Google sign-in maps users by Google profile name only, as required by the assignment. This is acceptable for the demo, but ambiguous for real-world identity mapping.
+- Docker-сценарій є основним шляхом перевірки.
+- Текст заяви-договору приведений до формулювання із завдання.
+- Додаткові можливості реалізовані без заміни базової demo-user поведінки.
