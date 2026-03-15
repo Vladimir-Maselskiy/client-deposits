@@ -17,10 +17,10 @@ export function SelectProgramStep({ programs }: Props) {
   return (
     <Stack spacing={3}>
       <Stack spacing={1}>
-        <Typography variant="h5">Choose A Deposit Program</Typography>
+        <Typography variant="h5">Оберіть депозитну програму</Typography>
         <Typography color="text.secondary">
-          Select the banking product first. Deposit parameters will be entered on the next
-          step.
+          Спочатку оберіть банківський продукт. Параметри вкладу вводяться на
+          наступному кроці.
         </Typography>
       </Stack>
 
@@ -50,8 +50,8 @@ export function SelectProgramStep({ programs }: Props) {
                 <Stack spacing={1}>
                   <Typography variant="h6">{program.name}</Typography>
                   <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                    <Chip label={`${program.rate}% annual`} />
-                    <Chip label={`${program.termMonths} months`} />
+                    <Chip label={`${program.rate}% річних`} />
+                    <Chip label={`${program.termMonths} міс.`} />
                     <Chip label={program.currency} />
                   </Stack>
                 </Stack>
@@ -60,7 +60,7 @@ export function SelectProgramStep({ programs }: Props) {
                     variant={isSelected ? "contained" : "outlined"}
                     onClick={() => setSelectedProgramId(program.id)}
                   >
-                    {isSelected ? "Selected" : "Choose"}
+                    {isSelected ? "Обрано" : "Обрати"}
                   </Button>
                 </Box>
               </Stack>

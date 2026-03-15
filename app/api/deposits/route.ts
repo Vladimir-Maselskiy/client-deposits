@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     const message =
       error instanceof CreateDepositError
         ? error.message
-        : "Failed to create deposit contract";
+        : "Не вдалося створити договір вкладу";
 
     return NextResponse.json({ message }, { status: 400 });
   }

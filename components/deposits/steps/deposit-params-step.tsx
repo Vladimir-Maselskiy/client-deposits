@@ -62,9 +62,9 @@ export function DepositParamsStep({ cards }: Props) {
   return (
     <Stack spacing={3} component="form" onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={1}>
-        <Typography variant="h5">Deposit Parameters</Typography>
+        <Typography variant="h5">Параметри вкладу</Typography>
         <Typography color="text.secondary">
-          Enter the amount, optional contract name, and payment method.
+          Вкажіть суму, опціональну назву договору та спосіб внесення коштів.
         </Typography>
       </Stack>
 
@@ -76,11 +76,11 @@ export function DepositParamsStep({ cards }: Props) {
             render={({ field }) => (
               <TextField
                 {...field}
-                label="Amount"
+                label="Сума"
                 placeholder="10000"
                 slotProps={{ inputLabel: { shrink: true } }}
                 error={Boolean(errors.amount)}
-                helperText={errors.amount?.message || "Enter the deposit amount"}
+                helperText={errors.amount?.message || "Вкажіть суму вкладу"}
                 inputMode="numeric"
                 value={formatAmountInput(field.value)}
                 onChange={(event) => field.onChange(formatAmountInput(event.target.value))}
@@ -100,11 +100,11 @@ export function DepositParamsStep({ cards }: Props) {
             render={({ field }) => (
               <TextField
                 {...field}
-                label="Custom Name"
-                placeholder="Vacation Reserve"
+                label="Назва"
+                placeholder="Резерв на відпустку"
                 slotProps={{ inputLabel: { shrink: true } }}
                 error={Boolean(errors.customName)}
-                helperText={errors.customName?.message || "Optional field"}
+                helperText={errors.customName?.message || "Необов’язкове поле"}
                 fullWidth
               />
             )}
@@ -115,10 +115,10 @@ export function DepositParamsStep({ cards }: Props) {
             control={control}
             render={({ field }) => (
               <FormControl error={Boolean(errors.paymentMethod)}>
-                <FormLabel sx={{ mb: 1 }}>Payment Method</FormLabel>
+                <FormLabel sx={{ mb: 1 }}>Спосіб внесення</FormLabel>
                 <RadioGroup row {...field}>
-                  <FormControlLabel value="CASH" control={<Radio />} label="Cash" />
-                  <FormControlLabel value="CARD" control={<Radio />} label="Card" />
+                  <FormControlLabel value="CASH" control={<Radio />} label="Готівка" />
+                  <FormControlLabel value="CARD" control={<Radio />} label="Картка" />
                 </RadioGroup>
                 <FormHelperText>{errors.paymentMethod?.message}</FormHelperText>
               </FormControl>
@@ -136,13 +136,13 @@ export function DepositParamsStep({ cards }: Props) {
               <TextField
                 {...field}
                 select
-                label="Card"
+                label="Картка"
                 slotProps={{ inputLabel: { shrink: true } }}
                 value={field.value ?? ""}
                 onChange={(event) => field.onChange(event.target.value || null)}
                 error={Boolean(errors.selectedCardId)}
                 helperText={
-                  errors.selectedCardId?.message || "Select a user card for payment"
+                  errors.selectedCardId?.message || "Оберіть картку користувача для списання"
                 }
                 fullWidth
               >
@@ -157,16 +157,16 @@ export function DepositParamsStep({ cards }: Props) {
         </Paper>
       ) : (
         <Alert severity="info">
-          Cash payment does not require choosing a card.
+          Для внесення готівкою обирати картку не потрібно.
         </Alert>
       )}
 
       <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
         <Button variant="outlined" onClick={() => setCurrentStep(0)}>
-          Back
+          Назад
         </Button>
         <Button type="submit" variant="contained">
-          Continue
+          Продовжити
         </Button>
       </Stack>
     </Stack>

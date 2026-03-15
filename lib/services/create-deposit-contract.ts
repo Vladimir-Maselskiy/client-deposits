@@ -11,7 +11,7 @@ export async function createDepositContract(
   const currentUser = await getActiveUser();
 
   if (!currentUser) {
-    throw new CreateDepositError("Current user was not found");
+    throw new CreateDepositError("Поточного користувача не знайдено");
   }
 
   const program = await prisma.depositProgram.findUnique({
@@ -21,20 +21,20 @@ export async function createDepositContract(
   });
 
   if (!program) {
-    throw new CreateDepositError("Deposit program was not found");
+    throw new CreateDepositError("Депозитну програму не знайдено");
   }
 
   const amount = parseAmountInput(payload.amount);
 
   if (!Number.isFinite(amount) || amount <= 0) {
-    throw new CreateDepositError("Deposit amount must be greater than zero");
+    throw new CreateDepositError("Сума вкладу має бути більшою за нуль");
   }
 
   const trimmedCustomName = payload.customName.trim();
   const trimmedAgreementText = payload.agreementText.trim();
 
   if (!trimmedAgreementText) {
-    throw new CreateDepositError("Agreement text is required");
+    throw new CreateDepositError("Текст договору є обов’язковим");
   }
 
   const contract = await prisma.$transaction(async (tx) => {
@@ -42,7 +42,7 @@ export async function createDepositContract(
 
     if (payload.paymentMethod === "CARD") {
       if (!payload.selectedCardId) {
-        throw new CreateDepositError("Card payment requires a selected card");
+        throw new CreateDepositError("Для внесення з картки потрібно обрати картку");
       }
 
       const card = await tx.card.findUnique({
@@ -52,15 +52,15 @@ export async function createDepositContract(
       });
 
       if (!card || card.userId !== currentUser.id) {
-        throw new CreateDepositError("Selected card is not available");
+        throw new CreateDepositError("Обрана картка недоступна");
       }
 
       if (card.currency !== program.currency) {
-        throw new CreateDepositError("Card currency must match deposit currency");
+        throw new CreateDepositError("Валюта картки має збігатися з валютою вкладу");
       }
 
       if (card.balance < amount) {
-        throw new CreateDepositError("Insufficient card balance");
+        throw new CreateDepositError("Недостатньо коштів на картці");
       }
 
       await tx.card.update({

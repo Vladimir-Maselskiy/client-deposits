@@ -1,30 +1,30 @@
 export const openApiDocument = {
   openapi: "3.0.3",
   info: {
-    title: "Client Deposits API",
+    title: "API депозитів клієнта",
     version: "1.0.0",
     description:
-      "OpenAPI documentation for the client deposits assignment. The primary write flow creates a new deposit contract with an intentional 10-second delay.",
+      "OpenAPI документація для тестового завдання з депозитів клієнта. Основний write-flow створює новий договір вкладу з навмисною затримкою відповіді на 10 секунд.",
   },
   servers: [
     {
       url: "http://localhost:3000",
-      description: "Local development server",
+      description: "Локальний сервер розробки",
     },
   ],
   tags: [
     {
       name: "Deposits",
-      description: "Deposit contract creation endpoints",
+      description: "Ендпоінти створення договору вкладу",
     },
   ],
   paths: {
     "/api/deposits": {
       post: {
         tags: ["Deposits"],
-        summary: "Create a deposit contract",
+        summary: "Створити договір вкладу",
         description:
-          "Creates a deposit contract for the active user. The response is intentionally delayed by 10 seconds to simulate a banking transaction.",
+          "Створює договір вкладу для активного користувача. Відповідь навмисно затримується на 10 секунд для емуляції банківської транзакції.",
         requestBody: {
           required: true,
           content: {
@@ -34,15 +34,15 @@ export const openApiDocument = {
               },
               examples: {
                 cardFunding: {
-                  summary: "Fund deposit from a card",
+                  summary: "Поповнення вкладу з картки",
                   value: {
                     selectedProgramId: "mock-program-uah",
                     amount: "20000",
-                    customName: "My Reserve",
+                    customName: "Мій резерв",
                     paymentMethod: "CARD",
                     selectedCardId: "mock-card-uah",
                     agreementText:
-                      "APPLICATION FORM\nfor opening a bank deposit\n...",
+                      "ЗАЯВА-АНКЕТА\nна відкриття банківського вкладу\n...",
                   },
                 },
               },
@@ -51,7 +51,7 @@ export const openApiDocument = {
         },
         responses: {
           200: {
-            description: "Deposit contract created successfully",
+            description: "Договір вкладу успішно створено",
             content: {
               "application/json": {
                 schema: {
@@ -61,7 +61,7 @@ export const openApiDocument = {
             },
           },
           400: {
-            description: "Validation or business-rule error",
+            description: "Помилка валідації або бізнес-логіки",
             content: {
               "application/json": {
                 schema: {
@@ -69,9 +69,9 @@ export const openApiDocument = {
                 },
                 examples: {
                   insufficientFunds: {
-                    summary: "Insufficient card balance",
+                    summary: "Недостатньо коштів на картці",
                     value: {
-                      message: "Insufficient card balance",
+                      message: "Недостатньо коштів на картці",
                     },
                   },
                 },
@@ -108,7 +108,7 @@ export const openApiDocument = {
           },
           amount: {
             type: "string",
-            description: "Human-entered amount string that is parsed on the server",
+            description: "Сума, введена користувачем у вигляді рядка, яку сервер додатково парсить",
           },
           customName: {
             type: "string",
@@ -119,7 +119,7 @@ export const openApiDocument = {
           selectedCardId: {
             type: "string",
             nullable: true,
-            description: "Required when paymentMethod is CARD",
+            description: "Обов’язкове поле, якщо paymentMethod = CARD",
           },
           agreementText: {
             type: "string",

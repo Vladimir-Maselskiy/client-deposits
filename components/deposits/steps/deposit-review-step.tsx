@@ -39,10 +39,9 @@ export function DepositReviewStep({ programs, cards }: Props) {
   return (
     <Stack spacing={3}>
       <Stack spacing={1}>
-        <Typography variant="h5">Review Deposit Details</Typography>
+        <Typography variant="h5">Перевірка даних вкладу</Typography>
         <Typography color="text.secondary">
-          Check the selected product and entered parameters before moving to the
-          agreement.
+          Перевірте обраний продукт і введені параметри перед переходом до договору.
         </Typography>
       </Stack>
 
@@ -57,21 +56,21 @@ export function DepositReviewStep({ programs, cards }: Props) {
       >
         <Stack spacing={2}>
           <SummaryRow
-            label="Program"
-            value={selectedProgram?.name ?? 'Program not selected'}
+            label="Програма"
+            value={selectedProgram?.name ?? 'Програму не обрано'}
           />
           <Divider flexItem />
           <SummaryRow
-            label="Rate and term"
+            label="Ставка та строк"
             value={
               selectedProgram
-                ? `${selectedProgram.rate}% annual, ${selectedProgram.termMonths} months`
+                ? `${selectedProgram.rate}% річних, ${selectedProgram.termMonths} міс.`
                 : '-'
             }
           />
           <Divider flexItem />
           <SummaryRow
-            label="Deposit amount"
+            label="Сума вкладу"
             value={
               selectedProgram
                 ? `${amount} ${selectedProgram.currency}`
@@ -80,23 +79,23 @@ export function DepositReviewStep({ programs, cards }: Props) {
           />
           <Divider flexItem />
           <SummaryRow
-            label="Custom contract name"
-            value={customName || 'Not provided'}
+            label="Назва договору"
+            value={customName || 'Не вказано'}
           />
           <Divider flexItem />
           <SummaryRow
-            label="Payment method"
-            value={paymentMethod === 'CARD' ? 'Card' : 'Cash'}
+            label="Спосіб внесення"
+            value={paymentMethod === 'CARD' ? 'Картка' : 'Готівка'}
           />
           {paymentMethod === 'CARD' && (
             <>
               <Divider flexItem />
               <SummaryRow
-                label="Selected card"
+                label="Обрана картка"
                 value={
                   selectedCard
                     ? `${selectedCard.name} - ${selectedCard.balance} ${selectedCard.currency}`
-                    : 'Card not selected'
+                    : 'Картку не обрано'
                 }
               />
             </>
@@ -106,10 +105,10 @@ export function DepositReviewStep({ programs, cards }: Props) {
 
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <Button variant="outlined" onClick={() => setCurrentStep(1)}>
-          Back
+          Назад
         </Button>
         <Button variant="contained" onClick={() => setCurrentStep(3)}>
-          Continue To Agreement
+          Перейти до договору
         </Button>
       </Stack>
     </Stack>

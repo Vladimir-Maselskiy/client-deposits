@@ -17,11 +17,11 @@ export default function ApiDocsPage() {
       >
         <Stack spacing={1.5}>
           <Typography variant="overline" color="primary.main">
-            API Docs
+            API документація
           </Typography>
           <Typography variant="h3">Swagger UI</Typography>
           <Typography color="text.secondary">
-            Interactive OpenAPI documentation for the deposit contract endpoint.
+            Інтерактивна OpenAPI документація для ендпоінта створення договору вкладу.
           </Typography>
         </Stack>
       </Paper>

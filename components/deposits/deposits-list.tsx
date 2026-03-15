@@ -48,7 +48,7 @@ export function DepositsList({ contracts }: Props) {
               />
             </Stack>
             <Typography color="text.secondary">
-              Opened on: {formatDate(contract.createdAt)}
+              Дата відкриття: {formatDate(contract.createdAt)}
             </Typography>
           </Stack>
         </Paper>

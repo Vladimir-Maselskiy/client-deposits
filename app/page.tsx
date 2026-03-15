@@ -16,23 +16,23 @@ export default function Home() {
     >
       <Stack spacing={2.5} maxWidth={760}>
         <Typography variant="overline" color="primary.main">
-          Client Deposits
+          Депозити клієнта
         </Typography>
-        <Typography variant="h3">Choose How To Continue</Typography>
+        <Typography variant="h3">Оберіть, як продовжити</Typography>
         <Typography color="text.secondary">
-          Use the seeded demo client immediately or authenticate with Google. The
-          deposit flow, contracts, cards, and agreement generation remain shared across
-          both modes.
+          Можна одразу скористатися тестовим демо-клієнтом або пройти авторизацію
+          через Google. Потік відкриття вкладу, договори, картки та формування заяви
+          працюють для обох режимів.
         </Typography>
         <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
           <Button href="/deposits" variant="contained">
-            Open Deposits As Demo User
+            Перейти до вкладів як демо-користувач
           </Button>
           <Button href="/deposits/new" variant="outlined">
-            Go Directly To New Deposit
+            Одразу до нового вкладу
           </Button>
           <Button href="/api-docs" variant="outlined">
-            Open API Docs
+            Відкрити API документацію
           </Button>
         </Stack>
       </Stack>

@@ -10,10 +10,10 @@ type Props = {
 export function AuthStatusCard({ session, googleEnabled }: Props) {
   const authMode = session?.user?.authMode ?? "demo";
   const isGoogleSession = authMode === "google";
-  const modeLabel = isGoogleSession ? "Google session" : "Demo user";
+  const modeLabel = isGoogleSession ? "Сесія Google" : "Демо-користувач";
   const description = isGoogleSession
-    ? `Authenticated as ${session?.user?.fullName ?? session?.user?.name ?? "Google user"}.`
-    : "The current flow can continue with the seeded demo client or switch to Google sign-in.";
+    ? `Виконано вхід як ${session?.user?.fullName ?? session?.user?.name ?? "користувач Google"}.`
+    : "Поточний сценарій можна продовжити з тестовим демо-клієнтом або перейти до входу через Google.";
 
   return (
     <Paper
@@ -33,7 +33,7 @@ export function AuthStatusCard({ session, googleEnabled }: Props) {
       >
         <Stack spacing={1}>
           <Stack direction="row" spacing={1} alignItems="center">
-            <Typography variant="h6">Access Mode</Typography>
+            <Typography variant="h6">Режим доступу</Typography>
             <Chip
               label={modeLabel}
               color={isGoogleSession ? "secondary" : "primary"}
@@ -43,8 +43,8 @@ export function AuthStatusCard({ session, googleEnabled }: Props) {
           <Typography color="text.secondary">{description}</Typography>
           {!googleEnabled && (
             <Typography color="text.secondary">
-              Google sign-in is disabled until `GOOGLE_CLIENT_ID`,
-              `GOOGLE_CLIENT_SECRET`, and `NEXTAUTH_SECRET` are configured.
+              Вхід через Google вимкнений, доки не налаштовано `GOOGLE_CLIENT_ID`,
+              `GOOGLE_CLIENT_SECRET` та `NEXTAUTH_SECRET`.
             </Typography>
           )}
         </Stack>

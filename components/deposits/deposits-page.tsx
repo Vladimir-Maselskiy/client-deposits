@@ -12,8 +12,8 @@ export function DepositsPage({ user }: Props) {
   const hasContracts = contracts.length > 0;
   const hasUser = Boolean(user);
   const currentClientSummary = user
-    ? `Current client: ${user.fullName}. Review active contracts or open a new deposit.`
-    : "Database data is not available yet. Once the database and seed are ready, deposits will appear here.";
+    ? `Поточний клієнт: ${user.fullName}. Перегляньте активні договори або відкрийте новий вклад.`
+    : "Дані з бази поки недоступні. Після підключення бази та виконання seed тут з’являться вклади.";
 
   return (
     <Box sx={{ width: '100%', py: { xs: 2, md: 3 } }}>
@@ -36,9 +36,9 @@ export function DepositsPage({ user }: Props) {
             >
               <Stack spacing={1.75} sx={{ minWidth: 0, maxWidth: 760 }}>
                 <Typography variant="overline" color="primary.main">
-                  Client Deposits
+                  Депозити клієнта
                 </Typography>
-                <Typography variant="h3">My Deposits</Typography>
+                <Typography variant="h3">Мої вклади</Typography>
                 <Typography color="text.secondary">
                   {currentClientSummary}
                 </Typography>
@@ -52,15 +52,15 @@ export function DepositsPage({ user }: Props) {
                   alignSelf: { xs: 'flex-start', md: 'center' },
                 }}
               >
-                New Deposit
+                Новий вклад
               </Button>
             </Stack>
           </Paper>
 
           {!hasUser && (
             <Alert severity="warning">
-              The page is in fallback mode because the current user could not be
-              loaded from the database.
+              Сторінка працює у fallback-режимі, тому що не вдалося завантажити
+              поточного користувача з бази даних.
             </Alert>
           )}
 

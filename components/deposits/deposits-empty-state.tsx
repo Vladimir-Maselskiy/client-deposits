@@ -27,10 +27,10 @@ export function DepositsEmptyState() {
         </Box>
         <Stack spacing={1}>
           <Typography variant="h5">
-            You do not have any open deposits yet, but that is easy to fix.
+            У вас ще немає відкритих вкладів, але це легко виправити.
           </Typography>
           <Typography color="text.secondary">
-            Choose a deposit program and open your first contract in a few steps.
+            Оберіть депозитну програму та відкрийте свій перший договір у кілька кроків.
           </Typography>
         </Stack>
         <Button
@@ -39,7 +39,7 @@ export function DepositsEmptyState() {
           size="large"
           sx={{ alignSelf: "flex-start" }}
         >
-          Open Deposit
+          Відкрити вклад
         </Button>
       </Stack>
     </Paper>

@@ -10,13 +10,13 @@ export const depositParamsSchema = z
     amount: z
       .string()
       .trim()
-      .min(1, "Amount is required")
+      .min(1, "Сума є обов’язковою")
       .refine((value) => {
         const parsed = parseAmountInput(normalizeAmount(value));
 
         return Number.isFinite(parsed) && parsed > 0;
-      }, "Amount must be greater than zero"),
-    customName: z.string().trim().max(60, "Name must be 60 characters or fewer"),
+      }, "Сума має бути більшою за нуль"),
+    customName: z.string().trim().max(60, "Назва має містити не більше 60 символів"),
     paymentMethod: z.enum(["CASH", "CARD"]),
     selectedCardId: z.string().nullable(),
   })
@@ -25,7 +25,7 @@ export const depositParamsSchema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["selectedCardId"],
-        message: "Select a card for card payment",
+        message: "Оберіть картку для внесення з картки",
       });
     }
   });

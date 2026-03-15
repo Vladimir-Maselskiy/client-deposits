@@ -24,7 +24,7 @@ export function AuthActions({
         startIcon={<LogoutRoundedIcon />}
         onClick={() => signOut({ callbackUrl: "/" })}
       >
-        Logout
+        Вийти
       </Button>
     );
   }
@@ -37,7 +37,7 @@ export function AuthActions({
           startIcon={<PersonOutlineRoundedIcon />}
           onClick={() => signIn("credentials", { callbackUrl: "/deposits" })}
         >
-          Continue As Demo User
+          Продовжити як демо-користувач
         </Button>
       )}
       <Button
@@ -46,7 +46,7 @@ export function AuthActions({
         disabled={!googleEnabled}
         onClick={() => signIn("google", { callbackUrl: "/deposits" })}
       >
-        Sign In With Google
+        Увійти через Google
       </Button>
     </Stack>
   );

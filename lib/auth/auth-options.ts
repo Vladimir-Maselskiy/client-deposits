@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       id: "credentials",
-      name: "Demo user",
+      name: "Демо-користувач",
       credentials: {},
       async authorize() {
         const user = await getDefaultCurrentUser();

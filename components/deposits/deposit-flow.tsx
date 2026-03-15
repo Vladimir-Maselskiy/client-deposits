@@ -56,7 +56,7 @@ export function DepositFlow({ user, programs, cards }: Props) {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to create deposit");
+        throw new Error(data.message || "Не вдалося оформити вклад");
       }
 
       return data as CreateDepositResponse;
@@ -140,20 +140,20 @@ export function DepositFlow({ user, programs, cards }: Props) {
         >
           <Stack spacing={1.5}>
             <Typography variant="overline" color="primary.main">
-              New Deposit
+              Новий вклад
             </Typography>
-            <Typography variant="h3">Open Deposit</Typography>
+            <Typography variant="h3">Відкриття вкладу</Typography>
             <Typography color="text.secondary" maxWidth={720}>
-              Follow the full application flow: choose a program, enter deposit parameters,
-              review the result, and confirm the generated agreement.
+              Пройдіть повний шлях оформлення: оберіть програму, задайте параметри,
+              перевірте дані та підтвердьте сформований договір.
             </Typography>
           </Stack>
         </Paper>
 
         {!hasPrograms && (
           <Alert severity="warning">
-            Deposit programs are not available yet. This usually means the database is not
-            connected or seed data has not been created.
+            Депозитні програми поки недоступні. Зазвичай це означає, що база даних
+            не підключена або тестові дані ще не створені.
           </Alert>
         )}
 
@@ -194,10 +194,10 @@ export function DepositFlow({ user, programs, cards }: Props) {
               >
                 <Stack spacing={1.5} alignItems="center">
                   <CircularProgress />
-                  <Typography fontWeight={700}>Processing Deposit</Typography>
+                  <Typography fontWeight={700}>Оформлюємо вклад</Typography>
                   <Typography color="text.secondary">
-                    The contract request is intentionally delayed for 10 seconds. The
-                    page stays locked until the response is complete.
+                    Запит на створення договору навмисно затримується на 10 секунд.
+                    До завершення відповіді сторінка залишається заблокованою.
                   </Typography>
                 </Stack>
               </Paper>
@@ -213,8 +213,7 @@ export function DepositFlow({ user, programs, cards }: Props) {
                 severity="info"
                 icon={<CircularProgress size={18} color="inherit" />}
               >
-                Creating the deposit contract. The request is intentionally delayed for 10
-                seconds.
+                Створюємо договір вкладу. Запит навмисно затримується на 10 секунд.
               </Alert>
             )}
             {renderStep()}
@@ -222,20 +221,20 @@ export function DepositFlow({ user, programs, cards }: Props) {
             {currentStep === 0 && (
               <>
                 <Alert severity="info">
-                  The selected program is stored in Zustand, and {cards.length} current-user
-                  cards are available for the upcoming payment step.
+                  Обрана програма зберігається в Zustand, а на наступному кроці доступно{" "}
+                  {cards.length} карток поточного користувача.
                 </Alert>
 
                 <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
                   <Button component={Link} href="/deposits" variant="outlined">
-                    Back To Deposits
+                    Назад до вкладів
                   </Button>
                   <Button
                     variant="contained"
                     disabled={!selectedProgramId || isSubmitting}
                     onClick={() => setCurrentStep(1)}
                   >
-                    Next
+                    Далі
                   </Button>
                 </Stack>
               </>

@@ -58,9 +58,9 @@ export function DepositAgreementStep({
   return (
     <Stack spacing={3}>
       <Stack spacing={1}>
-        <Typography variant="h5">Agreement</Typography>
+        <Typography variant="h5">Договір</Typography>
         <Typography color="text.secondary">
-          Review the generated agreement text and confirm consent before submission is added.
+          Перегляньте сформований текст договору та підтвердьте згоду перед оформленням.
         </Typography>
       </Stack>
 
@@ -88,19 +88,19 @@ export function DepositAgreementStep({
             onChange={(event) => setAgreementAccepted(event.target.checked)}
           />
         }
-        label="I confirm that I have read the agreement and accept its terms."
+        label="Підтверджую, що ознайомився з договором і погоджуюся з його умовами."
       />
 
       <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
         <Button variant="outlined" disabled={isSubmitting} onClick={() => setCurrentStep(2)}>
-          Back
+          Назад
         </Button>
         <Button
           variant="contained"
           disabled={!agreementAccepted || isSubmitting}
           onClick={() => onSubmit(agreementText)}
         >
-          Submit Deposit
+          Оформити
         </Button>
       </Stack>
     </Stack>
