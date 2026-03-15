@@ -1,10 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import type { CurrentUserProfile, CurrentUserWithDeposits } from "@/types/deposits";
 import { safeDbQuery } from "./safe-query";
-import { getDefaultCurrentUser } from "./current-user";
+import { getActiveUser } from "@/lib/auth/active-user";
 
 export async function getCurrentUserWithDeposits(): Promise<CurrentUserWithDeposits | null> {
-  const currentUser = await getDefaultCurrentUser();
+  const currentUser = await getActiveUser();
 
   if (!currentUser) {
     return null;
@@ -38,7 +38,7 @@ export async function getCurrentUserWithDeposits(): Promise<CurrentUserWithDepos
 }
 
 export async function getCurrentUserCards() {
-  const currentUser = await getDefaultCurrentUser();
+  const currentUser = await getActiveUser();
 
   if (!currentUser) {
     return [];
@@ -66,7 +66,7 @@ export async function getCurrentUserCards() {
 }
 
 export async function getCurrentUserProfile(): Promise<CurrentUserProfile | null> {
-  const currentUser = await getDefaultCurrentUser();
+  const currentUser = await getActiveUser();
 
   if (!currentUser) {
     return null;

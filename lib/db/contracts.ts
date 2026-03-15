@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { safeDbQuery } from "./safe-query";
-import { getDefaultCurrentUser } from "./current-user";
+import { getActiveUser } from "@/lib/auth/active-user";
 
 export async function getCurrentUserContracts() {
-  const currentUser = await getDefaultCurrentUser();
+  const currentUser = await getActiveUser();
 
   if (!currentUser) {
     return [];

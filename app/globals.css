@@ -18,6 +18,14 @@ body {
   padding: 40px 28px 64px;
 }
 
+.app-frame {
+  width: 100%;
+  max-width: 1080px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 * {
   box-sizing: border-box;
 }

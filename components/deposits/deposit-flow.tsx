@@ -108,7 +108,7 @@ export function DepositFlow({ user, programs, cards }: Props) {
   };
 
   return (
-    <Box sx={{ width: "100%", maxWidth: 1080, mx: "auto", py: { xs: 1, md: 2 } }}>
+    <Box sx={{ width: "100%", py: { xs: 1, md: 2 } }}>
       <Stack spacing={4}>
         <Paper
           elevation={0}

@@ -17,7 +17,7 @@ export function DepositsPage({ user }: Props) {
 
   return (
     <Box sx={{ width: '100%', py: { xs: 2, md: 3 } }}>
-      <Box sx={{ width: '100%', maxWidth: 1080, mx: 'auto' }}>
+      <Box sx={{ width: '100%' }}>
         <Stack spacing={{ xs: 3.5, md: 5 }}>
           <Paper
             elevation={0}

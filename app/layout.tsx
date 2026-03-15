@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { getServerSession } from "next-auth";
+import { AuthStatusCard } from "@/components/auth/auth-status-card";
+import { authOptions, isGoogleAuthEnabled } from "@/lib/auth/auth-options";
 import "./globals.css";
 import { Providers } from "./providers";
 
@@ -18,16 +21,26 @@ export const metadata: Metadata = {
   description: "Client deposit management module",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions);
+
   return (
     <html lang="uk">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Providers>
-          <main className="app-shell">{children}</main>
+          <main className="app-shell">
+            <div className="app-frame">
+              <AuthStatusCard
+                session={session}
+                googleEnabled={isGoogleAuthEnabled()}
+              />
+              {children}
+            </div>
+          </main>
         </Providers>
       </body>
     </html>

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { getDefaultCurrentUser } from "@/lib/db/current-user";
+import { getActiveUser } from "@/lib/auth/active-user";
 import type { CreateDepositPayload, CreateDepositResponse } from "@/types/deposits";
 import { parseAmountInput } from "@/lib/utils/amount";
 
@@ -8,7 +8,7 @@ export class CreateDepositError extends Error {}
 export async function createDepositContract(
   payload: CreateDepositPayload,
 ): Promise<CreateDepositResponse> {
-  const currentUser = await getDefaultCurrentUser();
+  const currentUser = await getActiveUser();
 
   if (!currentUser) {
     throw new CreateDepositError("Current user was not found");
