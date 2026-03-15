@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Alert, Box, Button, Paper, Stack, Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Link from "next/link";
@@ -67,6 +68,7 @@ export function DepositFlow({ user, programs, cards }: Props) {
       router.refresh();
     },
   });
+  const isSubmitting = createDepositMutation.isPending;
 
   const handleAgreementSubmit = (agreementText: string) => {
     if (!selectedProgramId) {
@@ -82,6 +84,23 @@ export function DepositFlow({ user, programs, cards }: Props) {
       agreementText,
     });
   };
+
+  useEffect(() => {
+    if (!isSubmitting) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    const previousTouchAction = document.body.style.touchAction;
+
+    document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.body.style.touchAction = previousTouchAction;
+    };
+  }, [isSubmitting]);
 
   const renderStep = () => {
     if (currentStep === 0) {
@@ -148,24 +167,40 @@ export function DepositFlow({ user, programs, cards }: Props) {
               "linear-gradient(180deg, rgba(255,250,244,0.98) 0%, rgba(250,244,235,0.98) 100%)",
           }}
         >
-          {createDepositMutation.isPending && (
+          {isSubmitting && (
             <Box
               sx={{
-                position: "absolute",
+                position: "fixed",
                 inset: 0,
-                zIndex: 2,
+                zIndex: 1400,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: 5,
-                bgcolor: "rgba(255, 250, 244, 0.78)",
-                backdropFilter: "blur(2px)",
+                px: 3,
+                bgcolor: "rgba(255, 250, 244, 0.82)",
+                backdropFilter: "blur(4px)",
               }}
             >
-              <Stack spacing={1.5} alignItems="center">
-                <CircularProgress />
-                <Typography fontWeight={600}>Processing Deposit</Typography>
-              </Stack>
+              <Paper
+                elevation={0}
+                sx={{
+                  width: "min(100%, 420px)",
+                  p: { xs: 3, md: 4 },
+                  borderRadius: 5,
+                  textAlign: "center",
+                  background:
+                    "linear-gradient(180deg, rgba(255,250,244,0.98) 0%, rgba(250,244,235,0.98) 100%)",
+                }}
+              >
+                <Stack spacing={1.5} alignItems="center">
+                  <CircularProgress />
+                  <Typography fontWeight={700}>Processing Deposit</Typography>
+                  <Typography color="text.secondary">
+                    The contract request is intentionally delayed for 10 seconds. The
+                    page stays locked until the response is complete.
+                  </Typography>
+                </Stack>
+              </Paper>
             </Box>
           )}
           <Stack spacing={4}>
@@ -173,7 +208,7 @@ export function DepositFlow({ user, programs, cards }: Props) {
             {createDepositMutation.isError && (
               <Alert severity="error">{createDepositMutation.error.message}</Alert>
             )}
-            {createDepositMutation.isPending && (
+            {isSubmitting && (
               <Alert
                 severity="info"
                 icon={<CircularProgress size={18} color="inherit" />}
@@ -197,7 +232,7 @@ export function DepositFlow({ user, programs, cards }: Props) {
                   </Button>
                   <Button
                     variant="contained"
-                    disabled={!selectedProgramId || createDepositMutation.isPending}
+                    disabled={!selectedProgramId || isSubmitting}
                     onClick={() => setCurrentStep(1)}
                   >
                     Next
