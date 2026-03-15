@@ -31,6 +31,9 @@ export default function Home() {
           <Button href="/deposits/new" variant="outlined">
             Go Directly To New Deposit
           </Button>
+          <Button href="/api-docs" variant="outlined">
+            Open API Docs
+          </Button>
         </Stack>
       </Stack>
     </Paper>

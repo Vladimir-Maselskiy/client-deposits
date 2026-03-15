@@ -29,6 +29,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-hook-form": "^7.65.0",
+    "swagger-ui-dist": "^5.32.0",
     "zod": "^4.1.11",
     "zustand": "^5.0.8"
   },

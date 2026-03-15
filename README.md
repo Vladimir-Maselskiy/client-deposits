@@ -41,6 +41,10 @@ This starts:
 - Prisma migration deployment
 - Prisma seed
 
+## API Docs
+- Swagger UI is available at `http://localhost:3000/api-docs`
+- Raw OpenAPI JSON is available at `http://localhost:3000/api/openapi`
+
 ## Notes
 - Current demo mode uses the first user in the database as the active user.
 - Seed is idempotent and safe to rerun.
