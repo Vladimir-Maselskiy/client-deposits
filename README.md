@@ -1,4 +1,4 @@
-# Client Deposits
+﻿# Client Deposits
 
 Повноцінне full-stack тестове завдання для модуля депозитів клієнта, побудоване
 на `Next.js App Router`, `TypeScript`, `Prisma`, `React Query`, `Zustand`,
@@ -160,6 +160,14 @@ GOOGLE_CLIENT_ID="your-google-client-id"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 ```
 
+Важливі примітки:
+
+- без цих змінних demo-user flow продовжує працювати
+- Google sign-in навмисно мапиться лише за `profile name`, як було вказано в
+  завданні
+- для демо цього достатньо, але для production така схема ідентифікації
+  неоднозначна
+
 ## API документація
 
 Swagger/OpenAPI доступні за адресами:
@@ -170,6 +178,12 @@ Swagger/OpenAPI доступні за адресами:
 Документований endpoint:
 
 - `POST /api/deposits`
+
+Ключові файли:
+
+- [route.ts](/c:/GitHub/client-deposits/app/api/deposits/route.ts)
+- [route.ts](/c:/GitHub/client-deposits/app/api/openapi/route.ts)
+- [document.ts](/c:/GitHub/client-deposits/lib/openapi/document.ts)
 
 ## Основні бізнес-правила
 
@@ -221,12 +235,13 @@ Swagger/OpenAPI доступні за адресами:
 
 Верхньорівнева структура:
 
-- [app](/client-deposits/app) - маршрути, API handlers, docs pages
-- [components](/client-deposits/components) - UI та кроки flow
-- [lib](/client-deposits/lib) - доступ до БД, сервіси, auth, OpenAPI config
-- [prisma](/client-deposits/prisma) - schema, migration, seed
-- [store](/client-deposits/store) - Zustand state для flow
-- [types](/client-deposits/types) - спільні TypeScript-типи
+- [app](/c:/GitHub/client-deposits/app) - маршрути, API handlers, docs pages
+- [components](/c:/GitHub/client-deposits/components) - UI та кроки flow
+- [lib](/c:/GitHub/client-deposits/lib) - доступ до БД, сервіси, auth, OpenAPI
+  config
+- [prisma](/c:/GitHub/client-deposits/prisma) - schema, migration, seed
+- [store](/c:/GitHub/client-deposits/store) - Zustand state для flow
+- [types](/c:/GitHub/client-deposits/types) - спільні TypeScript-типи
 
 ## Корисні команди
 
@@ -247,3 +262,41 @@ npm run lint
 - Docker-сценарій є основним шляхом перевірки.
 - Текст заяви-договору приведений до формулювання із завдання.
 - Додаткові можливості реалізовані без заміни базової demo-user поведінки.
+
+### Архітектура
+
+- бізнес-логіка відокремлена від UI
+- доступ до бази даних винесений у шар
+  [lib/db](/c:/GitHub/client-deposits/lib/db)
+- створення договору винесене в окремий сервіс
+  [create-deposit-contract.ts](/c:/GitHub/client-deposits/lib/services/create-deposit-contract.ts)
+- API routes, UI-компоненти, Prisma schema і flow state розділені по
+  відповідальних модулях
+
+### Стейт-менеджмент
+
+- `Zustand` використовується для збереження стану багатокрокової форми між
+  етапами
+- `React Query` використовується для async mutation та оновлення даних після
+  створення вкладу
+- відповідальність між локальним flow state і server interaction не дублюється
+
+### Валідація
+
+- `Zod` використовується для перевірки полів форми і умовних правил
+- окремо перевіряється сценарій внесення через картку
+- критичні бізнес-обмеження дублюються на backend-рівні, а не лише у frontend
+
+### DevOps
+
+- проєкт запускається через `docker compose up --build`
+- Docker-сценарій піднімає базу, застосунок, міграції та seed з однієї команди
+- Prisma migration і seed інтегровані в загальний сценарій запуску
+- seed є ідемпотентним і безпечним для повторного виконання
+
+### Clean Code
+
+- використовується наскрізна TypeScript-типізація
+- структура проєкту побудована за зонами відповідальності
+- UI flow розбитий на окремі кроки й компоненти
+- README описує запуск, архітектуру, правила роботи та сценарії перевірки
