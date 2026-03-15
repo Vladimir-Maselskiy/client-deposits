@@ -1,146 +1,59 @@
 # Task Context
 
 ## Goal
-- Використовувати цей файл як короткий робочий контекст для відновлення сесії під час виконання тестового завдання.
-- Побудувати на базі наявного шаблону `Next.js + Prisma` модуль "Депозити клієнта" для вакансії Middle Fullstack JS.
+- Finish the "Client Deposits" full-stack test assignment on top of the current `Next.js + Prisma` project.
 
-## Current State
-- Репозиторій побудований на `Next.js` з `App Router`, `TypeScript`, `React` і `Prisma`.
-- Поточний UI ще шаблонний: [app/page.tsx](/c:/GitHub/client-deposits/app/page.tsx) містить стандартну стартову сторінку `create-next-app` без бізнес-логіки.
-- Глобальний layout у [app/layout.tsx](/c:/GitHub/client-deposits/app/layout.tsx) теж близький до стандартного шаблону: базові шрифти `Geist`, стандартні `metadata`, мова сторінки зараз `en`.
-- У проєкті вже є доменна модель депозитів у [prisma/schema.prisma](/c:/GitHub/client-deposits/prisma/schema.prisma): `User`, `Card`, `DepositProgram`, `Contract`, а також enum-и `Currency` і `PaymentMethod`.
-- У [lib/prisma.ts](/c:/GitHub/client-deposits/lib/prisma.ts) налаштований типовий singleton для `PrismaClient` у dev-режимі.
-- З коду видно, що напрямок проєкту: оформлення або облік депозитних договорів з прив'язкою користувача, картки, депозитної програми та контракту.
-- README і частина метаданих поки залишаються boilerplate, тобто проєкт ще на ранньому етапі реалізації.
+## Current Status
+- The app uses `Next.js App Router`, `TypeScript`, `Prisma`, `React Query`, `Zustand`, `React Hook Form`, `Zod`, and `Material UI`.
+- Deposit domain models already exist in [schema.prisma](/c:/GitHub/client-deposits/prisma/schema.prisma): `User`, `Card`, `DepositProgram`, `Contract`, `Currency`, `PaymentMethod`.
+- The main user flow is implemented:
+- `/deposits` shows the deposits list or empty state.
+- `/deposits/new` contains a 4-step flow:
+- program selection,
+- deposit parameters,
+- review,
+- agreement with consent.
+- Submit is wired through [route.ts](/c:/GitHub/client-deposits/app/api/deposits/route.ts) and [create-deposit-contract.ts](/c:/GitHub/client-deposits/lib/services/create-deposit-contract.ts).
+- The backend already creates a contract, validates card flow, updates card balance, and waits 10 seconds before responding.
+- Prisma migration exists in [migration.sql](/c:/GitHub/client-deposits/prisma/migrations/20260314193000_init/migration.sql).
+- Seed exists in [seed.ts](/c:/GitHub/client-deposits/prisma/seed.ts) and is now idempotent.
+- Local `.env` already points to real PostgreSQL on `localhost:5432`.
+- PostgreSQL container was already started successfully and migration + seed were executed.
+- Runtime reads no longer use mock fallback data.
+- No-auth mode is explicitly implemented through [current-user.ts](/c:/GitHub/client-deposits/lib/db/current-user.ts), which resolves the first user in DB.
 
-## Test Assignment Summary
-- Потрібно реалізувати веб-додаток для управління банківськими депозитами.
-- Основний стек за вимогами: `Next.js App Router`, `TypeScript`, `React Query`, `Zustand`, `React Hook Form`, `Zod`, `Material UI`, БД, `Docker`, `Docker Compose`.
-- Обов'язкові сутності: `Users`, `Cards`, `DepositPrograms`, `Contracts`.
-- За замовчуванням застосунок працює з першим користувачем, знайденим у БД.
-- Потрібна сторінка "Мої вклади" з empty state або списком договорів.
-- Потрібен multi-step flow відкриття депозиту:
-- Крок 1: вибір програми з БД.
-- Крок 2: параметри депозиту, включно з сумою, опціональною назвою, способом внесення та вибором картки при card payment.
-- Крок 3: підтвердження введених даних.
-- Крок 4: договір із динамічними даними клієнта та чекбоксом згоди.
-- Після оформлення потрібен API-запис у БД з рівно 10-секундною затримкою, блокуванням UI, обробкою успіху та помилки.
-- Проєкт має запускатися через `docker-compose up`.
-- При старті БД має автоматично сідитись тестовими даними: користувач, його картки, мінімум 3 депозитні програми.
-- Додатково за бажанням: авторизація, адаптивність, Swagger.
+## Open Work
+- Verify the full DB-backed UI flow end-to-end after the latest changes.
+- Finalize the `docker-compose up` scenario so the whole project runs from one command without relying on a separately started local Next dev server.
+- Finalize README for handoff.
+- Optional future enhancement: support auth mode selection between `Demo user` and `Google auth`.
 
-## Decisions
-- Використовувати наявний шаблон `Next.js + Prisma` як базу для реалізації, а не створювати новий проєкт.
-- Контекст сесії зберігати в цьому файлі, а не покладатися на пам'ять діалогу.
-- Спочатку виконати всі обов'язкові вимоги тестового, а додаткові умови розглядати лише після готовності core-функціоналу.
-- Планувати роботу так, щоб після кожного завершеного завдання можна було зробити локальну перевірку збірки й відповідного сценарію.
+## Immediate Next Step
+- Verify and harden the full Docker-run flow so `docker-compose up` is enough to start DB, app, migrations, and seed for the assignment demo.
 
-## Implementation Plan
-1. Уточнення цільової архітектури поверх поточного шаблону.
-- Зафіксувати майбутню структуру директорій для `app`, UI-компонентів, data access, store, validation schemas, API/server logic.
-- Визначити маршрутну структуру: мінімально сторінка "Мої вклади" і сторінка відкриття депозиту.
-- Вирішити, як поєднуються `React Query`, `Zustand`, `React Hook Form`, `Zod` і `MUI`.
-- Локальна перевірка після етапу: структура узгоджена, зміни не ламають базовий шаблон.
+## After That
+- Run final end-to-end checks:
+- contract appears in `/deposits`,
+- card balance decreases for `CARD`,
+- 10-second delay is observable,
+- failure cases behave correctly.
+- Clean up remaining presentation or documentation rough edges only if needed.
 
-2. Приведення data layer до вимог тестового.
-- Перевірити, чи поточна `Prisma`-схема повністю покриває сценарії завдання.
-- За потреби скоригувати поля, обмеження, зв'язки й назви.
-- Додати міграції та seed-логіку для користувача, карток і депозитних програм.
-- Локальна перевірка після етапу: міграції застосовуються, seed виконується, тестові дані створюються коректно.
+## Known Constraints
+- Current bootstrap user data is demo data only, not future auth identity.
+- First-user-in-DB mode is the current no-auth behavior and should remain until optional auth is implemented.
+- Seed must stay non-destructive on rerun.
+- The current implementation intentionally does not use Google auth yet.
 
-3. Інфраструктура застосунку.
-- Додати та налаштувати `Material UI`.
-- Додати `React Query` provider.
-- Додати `Zustand` store для багатокрокової форми.
-- Підготувати базові Zod-схеми та спільні типи.
-- Локальна перевірка після етапу: провайдери працюють, сторінки рендеряться, збірка не ламається.
+## Future Auth Note
+- Planned optional auth behavior:
+- user can continue as `Demo user` mapped to the first user in DB,
+- or sign in with Google.
+- For Google auth, use only the Google profile name.
+- On first Google sign-in, create a `User` and generate random cards.
+- On later sign-ins, reuse the existing user data.
+- Add `Logout` for the Google-authenticated path.
 
-4. Реалізація сторінки "Мої вклади".
-- Завантаження першого користувача та його контрактів із БД.
-- Empty state з текстом із тестового і кнопкою переходу до оформлення.
-- Список договорів з назвою програми, сумою і датою створення.
-- Локальна перевірка після етапу: коректно працюють empty state і список на seeded даних.
-
-5. Реалізація кроку 1 multi-step flow.
-- Екран вибору депозитної програми з даними з БД.
-- Збереження вибору в `Zustand`.
-- Локальна перевірка після етапу: вибрана програма не губиться при переході далі.
-
-6. Реалізація кроку 2 multi-step flow.
-- Форма на `React Hook Form + Zod`.
-- Поля: сума, назва, спосіб внесення, картка при card payment.
-- Умовна валідація: картка обов'язкова лише для card payment.
-- За можливості перевірка бізнес-правил на суму, валюту та баланс картки.
-- Синхронізація форми зі store.
-- Локальна перевірка після етапу: валідні дані проходять, невалідні блокуються, стан не губиться між кроками.
-
-7. Реалізація кроку 3 multi-step flow.
-- Підсумковий екран перевірки введених даних.
-- Можливість повернутися назад без втрати стану.
-- Локальна перевірка після етапу: summary відповідає store, back navigation працює коректно.
-
-8. Реалізація кроку 4 multi-step flow.
-- Генерація тексту договору з динамічними підстановками.
-- Додавання чекбокса згоди як обов'язкової умови.
-- Підготовка фінального payload для відправки.
-- Локальна перевірка після етапу: текст договору коректний, submit недоступний без згоди.
-
-9. Реалізація backend-операції відкриття депозиту.
-- Створити API endpoint або server-side handler для оформлення депозиту.
-- Забезпечити рівно 10 секунд затримки перед відповіддю сервера.
-- Створювати `Contract`, а при оплаті карткою за потреби зменшувати баланс картки.
-- Додати серверну валідацію й обробку помилок.
-- Локальна перевірка після етапу: договір створюється, затримка стабільна, помилки повертаються коректно.
-
-10. Інтеграція async UX на фронтенді.
-- Використати `React Query` mutation для submit.
-- Показувати spinner і блокувати інтерфейс на час очікування.
-- Після успіху показувати повідомлення з деталями депозиту та редиректити на "Мої вклади".
-- Після помилки показувати зрозуміле повідомлення.
-- Локальна перевірка після етапу: async flow виглядає завершеним і не допускає повторного submit.
-
-11. Dockerization і сценарій запуску.
-- Додати `Dockerfile`.
-- Додати `docker-compose.yml` для застосунку та БД.
-- Забезпечити автоматичний запуск міграцій і seed.
-- Локальна перевірка після етапу: `docker-compose up` піднімає БД і застосунок із тестовими даними.
-
-12. Фіналізація перед здачею.
-- Прибрати залишки `create-next-app` із UI, metadata і README.
-- Оновити README з інструкціями локального й Docker-запуску.
-- Провести фінальний ручний прохід по всіх сценаріях.
-- Якщо лишиться час, додати адаптивність; авторизацію і Swagger розглядати лише після цього.
-- Локальна перевірка після етапу: проєкт готовий до демонстрації й має зрозумілий сценарій запуску.
-
-## Task Breakdown
-- Завдання 1: спроєктувати цільову структуру застосунку і погодити першу ітерацію.
-- Завдання 2: довести `Prisma`-схему, міграції та seed до вимог тестового.
-- Завдання 3: підключити `MUI`, `React Query`, `Zustand`, `React Hook Form`, `Zod`.
-- Завдання 4: зробити сторінку "Мої вклади".
-- Завдання 5: зробити крок 1 форми відкриття депозиту.
-- Завдання 6: зробити крок 2 з умовною валідацією.
-- Завдання 7: зробити крок 3 з review screen.
-- Завдання 8: зробити крок 4 з договором і підтвердженням.
-- Завдання 9: реалізувати API/серверну операцію відкриття депозиту із затримкою 10 секунд.
-- Завдання 10: інтегрувати frontend async flow через `React Query`.
-- Завдання 11: додати Docker і автоматичний seed/migration flow.
-- Завдання 12: прибрати boilerplate і підготувати проєкт до здачі.
-
-## Verification Strategy
-- Після кожного завдання робити локальну перевірку лише відповідного шару, а не чекати кінця всієї реалізації.
-- Після змін у схемі даних перевіряти міграції, seed і коректність читання з БД.
-- Після змін у фронтенді перевіряти збірку, навігацію, рендер станів і збереження даних між кроками.
-- Після змін в async/backend логіці перевіряти сценарії успіху, помилки, блокування UI та повторний вхід у flow.
-- Після Docker-етапу перевіряти повний сценарій старту з чистого оточення.
-
-## Next Steps
-- На наступному етапі деталізувати технічне рішення по першій ітерації реалізації.
-- Окремо визначити, які частини логіки будуть server-side, а які client-side.
-- Перед першими змінами в коді зафіксувати мінімальний scope першого етапу реалізації.
-
-## Risks / Questions
-- Поточна Prisma-схема близька до задачі, але ще не підтверджено, чи достатньо її для всіх бізнес-правил.
-- У проєкті поки не видно API-шару, форм, валідації, seed-даних і користувацьких сценаріїв.
-- У робочому дереві раніше була локальна зміна в `tsconfig.json`; її треба враховувати обережно під час подальших змін.
-- Потрібно окремо вирішити, яку Docker-стратегію використовувати для БД і старту міграцій.
-- Потрібно реалізувати "рівно 10 секунд" так, щоб це було стабільно й перевіряно локально.
+## Risks
+- The full `docker-compose up` path still needs final runtime confirmation.
+- Google-auth-by-name can become ambiguous if multiple users share the same name.

@@ -1,66 +1,59 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { Button, Paper, Stack, Typography } from "@mui/material";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <Paper
+      elevation={0}
+      sx={{
+        width: "100%",
+        maxWidth: 1080,
+        mx: "auto",
+        p: { xs: 3, md: 5 },
+        borderRadius: 5,
+        background:
+          "linear-gradient(135deg, rgba(24,79,61,0.12) 0%, rgba(255,250,244,0.98) 52%, rgba(182,132,26,0.1) 100%)",
+      }}
+    >
+      <Stack spacing={2.5} maxWidth={760}>
+        <Typography variant="overline" color="primary.main">
+          Депозити клієнта
+        </Typography>
+        <Typography variant="h3">Оберіть, як продовжити</Typography>
+        <Typography color="text.secondary">
+          Можна одразу скористатися тестовим демо-клієнтом або пройти авторизацію
+          через Google. Потік відкриття вкладу, договори, картки та формування заяви
+          працюють для обох режимів.
+        </Typography>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1.5}
+          useFlexGap
+          flexWrap="wrap"
+          alignItems={{ xs: "stretch", sm: "center" }}
+        >
+          <Button
+            href="/deposits"
+            variant="contained"
+            sx={{ width: { xs: "100%", sm: "auto" } }}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Перейти до вкладів як демо-користувач
+          </Button>
+          <Button
+            href="/deposits/new"
+            variant="outlined"
+            sx={{ width: { xs: "100%", sm: "auto" } }}
           >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            Одразу до нового вкладу
+          </Button>
+          <Button
+            href="/api-docs"
+            variant="outlined"
+            sx={{ width: { xs: "100%", sm: "auto" } }}
+          >
+            Відкрити API документацію
+          </Button>
+        </Stack>
+      </Stack>
+    </Paper>
   );
 }
