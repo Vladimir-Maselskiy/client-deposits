@@ -8,8 +8,12 @@ type Props = {
 };
 
 export function DepositsPage({ user }: Props) {
-  const hasContracts = Boolean(user?.contracts.length);
+  const contracts = user?.contracts ?? [];
+  const hasContracts = contracts.length > 0;
   const hasUser = Boolean(user);
+  const currentClientSummary = user
+    ? `Current client: ${user.fullName}. Review active contracts or open a new deposit.`
+    : "Database data is not available yet. Once the database and seed are ready, deposits will appear here.";
 
   return (
     <Box sx={{ width: '100%', py: { xs: 2, md: 3 } }}>
@@ -36,9 +40,7 @@ export function DepositsPage({ user }: Props) {
                 </Typography>
                 <Typography variant="h3">My Deposits</Typography>
                 <Typography color="text.secondary">
-                  {hasUser
-                    ? `Current client: ${user.fullName}. Review active contracts or open a new deposit.`
-                    : 'Database data is not available yet. Once the database and seed are ready, deposits will appear here.'}
+                  {currentClientSummary}
                 </Typography>
               </Stack>
               <Button
@@ -63,7 +65,7 @@ export function DepositsPage({ user }: Props) {
           )}
 
           {hasContracts ? (
-            <DepositsList contracts={user.contracts} />
+            <DepositsList contracts={contracts} />
           ) : (
             <DepositsEmptyState />
           )}

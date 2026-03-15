@@ -8,6 +8,7 @@ Full-stack test assignment for a client deposits module built with `Next.js`, `T
 - Agreement generation with consent step
 - API-based deposit creation with a fixed 10-second response delay
 - Prisma seed data for a demo user, cards, and deposit programs
+- No-auth demo mode that resolves the first user from the database
 
 ## Local Run
 1. Create `.env` from [.env.example](/c:/GitHub/client-deposits/.env.example).
@@ -19,17 +20,18 @@ npx prisma migrate deploy
 npx prisma db seed
 ```
 
-4. Start the app:
+4. Build and start the app:
 
 ```bash
-npm run dev
+npm run build
+npm run start
 ```
 
 ## Docker Run
 Run:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 This starts:
@@ -39,5 +41,6 @@ This starts:
 - Prisma seed
 
 ## Notes
-- The repository still contains temporary mock fallback reads for development. These should be removed once the real DB flow is confirmed end-to-end.
+- Current demo mode uses the first user in the database as the active user.
+- Seed is idempotent and safe to rerun.
 - Future optional Google auth should use explicit identity mapping and must not rely on the current demo user as an implicit authenticated identity.

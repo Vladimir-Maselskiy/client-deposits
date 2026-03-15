@@ -1,13 +1,20 @@
 import { prisma } from "@/lib/prisma";
 import type { CurrentUserProfile, CurrentUserWithDeposits } from "@/types/deposits";
 import { safeDbQuery } from "./safe-query";
+import { getDefaultCurrentUser } from "./current-user";
 
 export async function getCurrentUserWithDeposits(): Promise<CurrentUserWithDeposits | null> {
+  const currentUser = await getDefaultCurrentUser();
+
+  if (!currentUser) {
+    return null;
+  }
+
   return safeDbQuery(
     () =>
-      prisma.user.findFirst({
-        orderBy: {
-          createdAt: "asc",
+      prisma.user.findUnique({
+        where: {
+          id: currentUser.id,
         },
         include: {
           cards: {
@@ -31,11 +38,17 @@ export async function getCurrentUserWithDeposits(): Promise<CurrentUserWithDepos
 }
 
 export async function getCurrentUserCards() {
+  const currentUser = await getDefaultCurrentUser();
+
+  if (!currentUser) {
+    return [];
+  }
+
   const user = await safeDbQuery(
     () =>
-      prisma.user.findFirst({
-        orderBy: {
-          createdAt: "asc",
+      prisma.user.findUnique({
+        where: {
+          id: currentUser.id,
         },
         include: {
           cards: {
@@ -53,19 +66,15 @@ export async function getCurrentUserCards() {
 }
 
 export async function getCurrentUserProfile(): Promise<CurrentUserProfile | null> {
-  return safeDbQuery(
-    () =>
-      prisma.user.findFirst({
-        orderBy: {
-          createdAt: "asc",
-        },
-        select: {
-          id: true,
-          fullName: true,
-          address: true,
-        },
-      }),
-    null,
-    "Failed to load current user profile",
-  );
+  const currentUser = await getDefaultCurrentUser();
+
+  if (!currentUser) {
+    return null;
+  }
+
+  return {
+    id: currentUser.id,
+    fullName: currentUser.fullName,
+    address: currentUser.address,
+  };
 }

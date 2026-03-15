@@ -2,23 +2,27 @@
 // npm install --save-dev prisma dotenv
 import "dotenv/config";
 import path from "node:path";
+import os from "node:os";
 import { defineConfig } from "prisma/config";
 
 process.env.PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING ??= "1";
-process.env.PRISMA_SCHEMA_ENGINE_BINARY ??= path.join(
-  process.cwd(),
-  "node_modules",
-  "@prisma",
-  "engines",
-  "schema-engine-windows.exe",
-);
-process.env.PRISMA_QUERY_ENGINE_LIBRARY ??= path.join(
-  process.cwd(),
-  "node_modules",
-  "@prisma",
-  "engines",
-  "query_engine-windows.dll.node",
-);
+
+if (os.platform() === "win32") {
+  process.env.PRISMA_SCHEMA_ENGINE_BINARY ??= path.join(
+    process.cwd(),
+    "node_modules",
+    "@prisma",
+    "engines",
+    "schema-engine-windows.exe",
+  );
+  process.env.PRISMA_QUERY_ENGINE_LIBRARY ??= path.join(
+    process.cwd(),
+    "node_modules",
+    "@prisma",
+    "engines",
+    "query_engine-windows.dll.node",
+  );
+}
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
